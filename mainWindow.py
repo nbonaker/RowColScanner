@@ -181,6 +181,7 @@ class MainKeyboardWidget(QtWidgets.QWidget):
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.parent = parent
+        print(type(self.parent))
         self.layout = layout
         self.screen_res = screen_res
         self.size_factor = min(self.screen_res) / 1080.
@@ -309,7 +310,12 @@ class MainKeyboardWidget(QtWidgets.QWidget):
                         text = self.parent.words_li[word_count]
                         self.labels_word.append(label)
                         word_count += 1
-                    label.setText(" "+text)
+
+                    if text == "":
+                        label.setText("")
+                    else:
+                        label.setText(" "+text)
+
                     self.label_grid.addWidget(label, 2*row_num+1, 2*col_num+1, 1, 1)
                 self.label_grid.addWidget(HorizontalSeparator(), 2*row_num, 2*col_num+1)
                 self.label_grid.addWidget(VerticalSeparator(), 2 * row_num+1, 2 * col_num)
@@ -351,7 +357,6 @@ class MainKeyboardWidget(QtWidgets.QWidget):
                 else:
                     label.setStyleSheet("border: 1px outset black; background-color:")
 
-    
     def clear_layout(self, layout):
             child = layout.takeAt(0)
             if child.widget():

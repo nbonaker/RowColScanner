@@ -24,6 +24,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from mainWindow import MainWindow
 # import dtree
 from kenlm_lm import LanguageModel
+from phrases import Phrases
 from pickle_util import PickleUtil
 
 import sys
@@ -71,12 +72,16 @@ class Keyboard(MainWindow):
         self.font_scale = 1
 
         self.key_chars = kconfig.key_chars
-        self.num_words = 3
+        self.key_chars_sorted = kconfig.key_chars_sorted
+        self.key_config = "sorted"
+        # self.key_config = "default"
+
+        self.num_words = 20
+        self.words_first = True
+        # self.words_first = False
+
         self.speed = config.default_rotate_ind
         self.sound_set = True
-
-        self.key_chars = kconfig.key_chars
-
 
         self.lm_prefix = ""
         self.left_context = ""
@@ -85,10 +90,28 @@ class Keyboard(MainWindow):
         self.cwd = os.getcwd()
         self.gen_data_handel()
 
+        self.params_handle_dict = {'speed': [], 'params': [], 'start': [], 'press': [], 'choice': []}
+        self.num_presses = 0
+
+        self.last_press_time = time.time()
+        self.last_update_time = time.time()
+
+        self.params_handle_dict['params'].append([config.period_li[config.default_rotate_ind], config.theta0])
+        self.params_handle_dict['start'].append(time.time())
+        self.click_time_list = []
+        self.change_speed(config.default_rotate_ind)
+
         lm_path = os.path.join(os.path.join(self.cwd, 'resources'), 'lm_word_medium.kenlm')
         vocab_path = os.path.join(os.path.join(self.cwd, 'resources'), 'vocab_100k')
 
         self.lm = LanguageModel(lm_path, vocab_path)
+
+        self.phrase_prompts = True
+        if self.phrase_prompts:
+            self.phrases = Phrases("resources/all_lower_nopunc.txt")
+        else:
+            self.phrases = None
+
 
         # determine keyboard positions
         # set up file handle for printing useful stuff
@@ -112,6 +135,7 @@ class Keyboard(MainWindow):
         self.col_scan_num = -1
 
         self.init_ui()
+        self.update_phrases("")
 
         # animate
 
@@ -182,26 +206,76 @@ class Keyboard(MainWindow):
         print(self.data_handel)
 
     def generate_layout(self):
-        self.key_layout = np.array(self.key_chars)
-        closest_square = int(np.ceil(np.sqrt(len(self.key_layout) + self.num_words)))
-        num_vacancies = np.square(closest_square) - len(self.key_layout) - self.num_words
+        if self.key_config == "sorted":
+            self.keys_list = np.array(self.key_chars_sorted)
+            closest_square = int(np.ceil(np.sqrt(len(self.keys_list) + self.num_words)))
 
-        self.key_layout = np.concatenate((self.key_layout, np.array([kconfig.word_char for i in range(self.num_words)])))
-        self.key_layout = np.concatenate((self.key_layout, np.zeros(num_vacancies)))
-        self.key_layout = np.reshape(self.key_layout, (closest_square, closest_square))
+            self.key_freq_map = np.zeros((closest_square, closest_square))
+            for row_num, row in enumerate(self.key_freq_map):
+                for col_num, _ in enumerate(row):
+                    self.key_freq_map[row_num][col_num] = row_num + col_num
+        else:
+            self.keys_list = np.array(self.key_chars)
+            closest_square = int(np.ceil(np.sqrt(len(self.keys_list) + self.num_words)))
 
-        empty_index = np.sum(np.where(self.key_layout != '0.0', 1, 0), axis=1).tolist().index(0)
-        self.key_layout = self.key_layout[:empty_index]
+            self.key_freq_map = np.zeros((closest_square, closest_square))
+            for row_num, row in enumerate(self.key_freq_map):
+                for col_num, _ in enumerate(row):
+                    self.key_freq_map[row_num][col_num] = row_num * closest_square + col_num
+
+        self.key_layout = np.empty((closest_square, closest_square), dtype=str)
+
+        for word in range(self.num_words):  # fill words first
+            if self.words_first:
+                word_index = np.unravel_index(word, (closest_square, closest_square))
+            else:
+                word_index = np.unravel_index(closest_square**2 - self.num_words + word,
+                                              (closest_square, closest_square))
+
+            self.key_layout[word_index] = kconfig.word_char
+            self.key_freq_map[word_index] = float("inf")
+
+        sorted_indicies = []
+        for i in range(len(self.keys_list)):
+            arg_min_index = np.unravel_index(self.key_freq_map.argmin(), self.key_freq_map.shape)
+            sorted_indicies += [arg_min_index]
+            self.key_freq_map[arg_min_index] = float("inf")
+
+        sorted_indicies.reverse()
+        for key in self.keys_list:
+            lowest_index = sorted_indicies.pop()
+            self.key_layout[lowest_index] = key
+
+        print(self.key_layout)
+        empty_row_counts = np.sum(np.where(self.key_layout != '', 1, 0), axis=1).tolist()
+        if 0 in empty_row_counts:
+            empty_index = empty_row_counts.index(0)
+            self.key_layout = np.delete(self.key_layout, (empty_index), axis=0)
 
         self.key_rows_num = len(self.key_layout)
-        self.key_cols_nums = np.sum(np.where(self.key_layout != '0.0', 1, 0), axis=1).tolist()
+        self.key_cols_nums = np.sum(np.where(self.key_layout != '', 1, 0), axis=1).tolist()
+
+        # shift empty cells
+
+        for row_num, row in enumerate(self.key_layout):
+            if "" in row:
+                row_list = row.tolist()
+                row_list.sort(key = lambda x: 2 if x == "" else 1)
+                self.key_layout[row_num] = np.array(row_list)
 
     def keyPressEvent(self, e):
         if e.key() == QtCore.Qt.Key_Space:
+            self.last_gap_time = time.time() - self.last_update_time
+            self.last_press_time = time.time()
+            self.save_click_time(self.last_press_time, self.last_gap_time, (self.row_scan_num, self.col_scan_num))
+
             self.on_press()
 
     def change_speed(self, value):
+        old_rotate = config.period_li[self.speed]
         self.speed = value
+        self.time_rotate = config.period_li[self.speed]
+        self.params_handle_dict['speed'].append([time.time(), old_rotate, self.time_rotate])
         
     def toggle_sound_button(self, value):
         self.sound_set = value
@@ -213,6 +287,8 @@ class Keyboard(MainWindow):
     def on_timer(self):
         if self.focusWidget() == self.mainWidget.text_box:
             self.mainWidget.sldLabel.setFocus()  # focus on not toggle-able widget to allow keypress event
+
+        self.last_update_time = time.time()
 
         if self.row_scan:
             self.row_scan_num += 1
@@ -233,6 +309,11 @@ class Keyboard(MainWindow):
             self.col_scan = True
         elif self.col_scan:
             self.make_selection()
+        self.num_presses += 1
+
+    def save_click_time(self, last_press_time, last_gap_time, index):
+        self.params_handle_dict['press'].append([last_press_time])
+        self.click_time_list.append((last_gap_time, index))
 
     def make_selection(self):
         self.winner = self.key_layout[self.row_scan_num][self.col_scan_num]
@@ -243,6 +324,7 @@ class Keyboard(MainWindow):
         self.mainWidget.update_grid()
         print(self.winner)
 
+        self.params_handle_dict['choice'].append([time.time(), self.winner == kconfig.mybad_char, self.typed_versions[-1]])
 
         self.col_scan = False
         self.row_scan = True
@@ -250,7 +332,11 @@ class Keyboard(MainWindow):
         self.col_scan_num = -1
 
     def draw_typed(self):
-        previous_text = self.mainWidget.text_box.toPlainText()
+        if len(self.typed_versions) > 0:
+            previous_text = self.typed_versions[-1]
+        else:
+            previous_text = ""
+
         if "_" in previous_text:
             previous_text = previous_text.replace("_", " ")
 
@@ -269,19 +355,51 @@ class Keyboard(MainWindow):
             if len(self.typed_versions) > 1:
                 self.typed_versions = self.typed_versions[:-1]
                 self.mainWidget.text_box.setText("<span style='color:#000000;'>" + self.typed_versions[-1] + "</span>")
+        elif self.winner == kconfig.clear_char:
+            if len(self.typed_versions) > 1:
+                self.typed_versions += [" "]
+                self.mainWidget.text_box.setText("")
         else:
             self.typed_versions += [previous_text + new_text]
             if new_text in kconfig.break_chars:
                 new_text = new_text + ' '
                 if previous_text[-1] == " ":
                     previous_text = previous_text[:-1]
-            if new_text[-1] == " ":
+            if len(new_text) > 0 and new_text[-1] == " ":
                 new_text = new_text[:-1]+"_"
             self.mainWidget.text_box.setText(
                 "<span style='color:#000000;'>" + previous_text + "</span><span style='color:#00dd00;'>"
                 + new_text + "</span>")
         self.mainWidget.text_box.update()
         self.update_prefixes()
+
+        if self.phrase_prompts:
+            self.update_phrases(self.typed_versions[-1])
+
+    def reset_context(self):
+        self.left_context = ""
+        self.context = ""
+        self.typed = ""
+        self.lm_prefix = ""
+
+    def update_phrases(self, cur_text):
+        cur_phrase_typed, next_phrase = self.phrases.compare(cur_text)
+
+        if next_phrase:
+            self.typed_versions += ['']
+            self.mainWidget.text_box.setText('')
+            self.clear_text = False
+            undo_text = 'Clear'
+
+            self.phrases.sample()
+            cur_phrase_typed = ""
+            self.reset_context()
+
+        new_text = self.mainWidget.text_box.toPlainText()
+
+        self.mainWidget.text_box.setText(
+            "<p><span style='color:#00dd00;'>" + cur_phrase_typed + "</span><span style='color:#000000;'>"
+            + self.phrases.cur_phrase[len(cur_phrase_typed):] + "<\p><p>" + new_text + "</span><\p>")
 
     def update_prefixes(self):
         cur_text = self.typed_versions[-1]
@@ -309,8 +427,19 @@ class Keyboard(MainWindow):
         # self.deleteLater()
 
     def quit(self, event=None):
+        self.save_data()
         self.close()
 
+    def save_data(self):
+        self.click_data_path = os.path.join(self.data_handel,
+                                            'click_time_log_' + str(self.use_num) + '.p')
+        self.params_data_path = os.path.join(self.data_handel,
+                                             'params_data_use_num' + str(self.use_num) + '.p')
+        print(self.params_data_path)
+        PickleUtil(self.click_data_path).safe_save(
+            {'user id': self.user_id, 'use_num': self.use_num, 'click time list': self.click_time_list,
+             'rotate index': self.speed})
+        PickleUtil(self.params_data_path).safe_save(self.params_handle_dict)
 
 def main():
     print("****************************\n****************************\n[Loading...]")

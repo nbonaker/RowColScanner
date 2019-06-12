@@ -30,7 +30,7 @@ space_char = ' '
 mybad_char = '@'
 # yourbad_char = 'Yours'
 yourbad_char = 'Undo+'
-break_chars = ['.', ',', '?', '!']
+break_chars = ['.', ',']
 back_char = '#'
 clear_char = '$'
 word_char = '&'
@@ -40,9 +40,11 @@ max_chars_display = 11
 ## alphabetic
 # always put alpha-numeric keys first (self.N_alpha_keys)
 
-key_chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                   'u', 'v', 'w', 'x', 'y', 'z', '\'', space_char, '\'', break_chars[0], break_chars[1],
-                   break_chars[2], break_chars[3], back_char, clear_char, mybad_char]
+key_chars = [mybad_char, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+                   'u', 'v', 'w', 'x', 'y', 'z', '\'', space_char, '\'']+break_chars+[back_char, clear_char]
+
+key_chars_sorted = [mybad_char, 'e', 'a', 's', 'i', 'r', 'n', 'o', 't', 'l', 'c', 'd', 'u', 'm', 'g', 'p', 'h', 'b', 'y', 'f',
+                     'k', 'w', 'v', "\'", 'z', 'x', 'j', 'q', space_char]+break_chars+[back_char, clear_char]
 
 num_words = 5
 
