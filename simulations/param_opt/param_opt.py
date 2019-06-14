@@ -5,6 +5,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 parentdir = os.path.dirname(parentdir)
 os.chdir(parentdir)
+sys.path.append(parentdir)
 
 from simulated_user import SimulatedUser
 from pickle_util import PickleUtil

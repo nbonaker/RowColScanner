@@ -94,7 +94,7 @@ class SimulatedUser:
 
         self.lm = LanguageModel(lm_path, vocab_path)
 
-        self.kernel_handle = PickleUtil("resources\\kde_kernel.p")
+        self.kernel_handle = PickleUtil("resources/kde_kernel.p")
         self.kde_kernel = self.kernel_handle.safe_load()
 
         self.phrase_prompts = True
@@ -342,19 +342,38 @@ class SimulatedUser:
         selection_time = self.timing_map[index_2d[0], index_2d[1]]
 
         press_times = self.kde_kernel.resample(2)[0]
+        press_times = [2, -1]
         error = False
+
         if press_times[0] < 0:
             index_2d[0] -= 1
+
+            if index_2d[0] < 0:
+                index_2d[0] = self.key_rows_num
+
             error=True
         elif press_times[0] >= self.scanning_delay:
             index_2d[0] += 1
+
+            if index_2d[0] == self.key_rows_num:
+                index_2d[0] = 0
+
             error = True
 
         if press_times[1] < 0:
             index_2d[1] -= 1
+
+            if index_2d[1] == -1:
+                index_2d[1] = self.key_cols_nums[index_2d[0]]
+
             error = True
+
         elif press_times[1] >= self.scanning_delay:
             index_2d[1] += 1
+
+            if index_2d[1] == self.key_cols_nums[index_2d[0]]:
+                index_2d[1] = index_2d[0]
+
             error = True
 
         if error:

@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bcaf67c-e276-4639-92da-a1d9abae1c16" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kenlm_lm.py" beforeDir="false" afterPath="$PROJECT_DIR$/kenlm_lm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulated_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulations/param_opt/param_opt.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulations/param_opt/param_opt.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keyboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="390" column="27" lean-forward="true" selection-start-line="390" selection-start-column="27" selection-end-line="390" selection-end-column="27" />
+            <state relative-caret-position="378">
+              <caret line="105" column="31" lean-forward="true" selection-start-line="105" selection-start-column="31" selection-end-line="105" selection-end-column="31" />
               <folding>
                 <element signature="e#852#870#0" expanded="true" />
               </folding>
@@ -35,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulated_user.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
+            <state relative-caret-position="648">
+              <caret line="377" lean-forward="true" selection-start-line="377" selection-end-line="377" />
               <folding>
                 <element signature="e#852#870#0" expanded="true" />
               </folding>
@@ -45,10 +39,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/param_opt/param_opt.py">
+        <entry file="file://$PROJECT_DIR$/simulations/param_opt/param_opt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+            <state relative-caret-position="144">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -147,10 +141,11 @@
         <option value="$PROJECT_DIR$/keyboard.py" />
         <option value="$PROJECT_DIR$/kenlm_lm.py" />
         <option value="$PROJECT_DIR$/predictor.py" />
-        <option value="$PROJECT_DIR$/simulated_user.py" />
         <option value="$PROJECT_DIR$/param_opt/param_opt.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/param_opt/sim_param_opt.sh" />
+        <option value="$PROJECT_DIR$/simulated_user.py" />
+        <option value="$PROJECT_DIR$/simulations/param_opt/param_opt.py" />
       </list>
     </option>
   </component>
@@ -177,6 +172,12 @@
             <path>
               <item name="RowColScanner" type="b2602c69:ProjectViewProjectNode" />
               <item name="RowColScanner" type="462c0819:PsiDirectoryNode" />
+              <item name="simulations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RowColScanner" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RowColScanner" type="462c0819:PsiDirectoryNode" />
+              <item name="simulations" type="462c0819:PsiDirectoryNode" />
               <item name="param_opt" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -196,6 +197,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations" />
       <recent name="C:\Users\nickb\PycharmProjects\RowColScanner" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -215,7 +217,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.param_opt">
+  <component name="RunManager" selected="Python.param_opt (1)">
     <configuration name="config" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RowColScanner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -260,7 +262,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="mainWindow" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="param_opt (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RowColScanner" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -268,12 +270,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/simulations/param_opt" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mainWindow.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/simulations/param_opt/param_opt.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -328,11 +330,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.param_opt" />
+        <item itemvalue="Python.param_opt (1)" />
         <item itemvalue="Python.simulated_user" />
+        <item itemvalue="Python.param_opt" />
         <item itemvalue="Python.keyboard" />
         <item itemvalue="Python.config" />
-        <item itemvalue="Python.mainWindow" />
       </list>
     </recent_temporary>
   </component>
@@ -349,7 +351,7 @@
       <workItem from="1559936900959" duration="436000" />
       <workItem from="1560112830257" duration="15721000" />
       <workItem from="1560273550460" duration="13494000" />
-      <workItem from="1560312818353" duration="33741000" />
+      <workItem from="1560312818353" duration="36703000" />
     </task>
     <task id="LOCAL-00001" summary="first iteration">
       <created>1559937167370</created>
@@ -365,11 +367,32 @@
       <option name="project" value="LOCAL" />
       <updated>1560357178113</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added Simulated User&#10;added Parameter Optimization Simulation">
+      <created>1560530053811</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1560530053811</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updated Parameter Optimization Simulation">
+      <created>1560530226213</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1560530226213</updated>
+    </task>
+    <task id="LOCAL-00005" summary="updated Parameter Optimization Simulation">
+      <created>1560531040188</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1560531040188</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63392000" />
+    <option name="totallyTimeSpent" value="66354000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -384,7 +407,7 @@
     <frame x="-7" y="-7" width="1721" height="1041" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18220085" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18220085" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -436,7 +459,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first iteration" />
     <MESSAGE value="added multiple layouts and configurations for simulations&#10;added data collection and utilities" />
-    <option name="LAST_COMMIT_MESSAGE" value="added multiple layouts and configurations for simulations&#10;added data collection and utilities" />
+    <MESSAGE value="added Simulated User&#10;added Parameter Optimization Simulation" />
+    <MESSAGE value="updated Parameter Optimization Simulation" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated Parameter Optimization Simulation" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RowColScanner$keyboard.coverage" NAME="keyboard Coverage Results" MODIFIED="1560461661660" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -445,7 +470,8 @@
     <SUITE FILE_PATH="coverage/RowColScanner$data_load.coverage" NAME="data_load Coverage Results" MODIFIED="1560311611447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$config.coverage" NAME="config Coverage Results" MODIFIED="1560452736196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$param_opt.coverage" NAME="param_opt Coverage Results" MODIFIED="1560529757138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/param_opt" />
-    <SUITE FILE_PATH="coverage/RowColScanner$simulated_user.coverage" NAME="simulated_user Coverage Results" MODIFIED="1560527304349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$param_opt__1_.coverage" NAME="param_opt (1) Coverage Results" MODIFIED="1560533051001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/param_opt" />
+    <SUITE FILE_PATH="coverage/RowColScanner$simulated_user.coverage" NAME="simulated_user Coverage Results" MODIFIED="1560532930607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$kconfig.coverage" NAME="kconfig Coverage Results" MODIFIED="1560194075846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$char_freq.coverage" NAME="char_freq Coverage Results" MODIFIED="1560197795528" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$mainWindow.coverage" NAME="mainWindow Coverage Results" MODIFIED="1560450829713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -567,14 +593,14 @@
     <entry file="file://$PROJECT_DIR$/rowcol.ico">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/sim_data_1/1/sorted_0_nwords_0_wf_0.p">
+    <entry file="file://$PROJECT_DIR$/simulations/sim_data_1/1/sorted_0_nwords_0_wf_0.p">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="25" column="173" selection-start-line="25" selection-start-column="173" selection-end-line="25" selection-end-column="173" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param_opt/click_distributions/kde_kernel.p">
+    <entry file="file://$PROJECT_DIR$/simulations/param_opt/click_distributions/kde_kernel.p">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="14" column="87" selection-start-line="14" selection-start-column="87" selection-end-line="14" selection-end-column="87" />
@@ -588,26 +614,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulated_user.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
-          <folding>
-            <element signature="e#852#870#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/keyboard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="390" column="27" lean-forward="true" selection-start-line="390" selection-start-column="27" selection-end-line="390" selection-end-column="27" />
-          <folding>
-            <element signature="e#852#870#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -615,17 +621,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param_opt/sim_param_opt.sh">
+    <entry file="file://$PROJECT_DIR$/simulations/param_opt/sim_param_opt.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param_opt/param_opt.py">
+    <entry file="file://$PROJECT_DIR$/keyboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+        <state relative-caret-position="378">
+          <caret line="105" column="31" lean-forward="true" selection-start-line="105" selection-start-column="31" selection-end-line="105" selection-end-column="31" />
+          <folding>
+            <element signature="e#852#870#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulated_user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="377" lean-forward="true" selection-start-line="377" selection-end-line="377" />
+          <folding>
+            <element signature="e#852#870#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulations/param_opt/param_opt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
