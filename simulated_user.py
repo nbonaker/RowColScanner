@@ -296,7 +296,7 @@ class SimulatedUser:
             lowest_index = sorted_indicies.pop()
             self.key_layout[lowest_index] = key
 
-        print(self.key_layout)
+        # print(self.key_layout)
         empty_row_counts = np.sum(np.where(self.key_layout != '', 1, 0), axis=1).tolist()
         if 0 in empty_row_counts:
             empty_index = empty_row_counts.index(0)
@@ -342,14 +342,13 @@ class SimulatedUser:
         selection_time = self.timing_map[index_2d[0], index_2d[1]]
 
         press_times = self.kde_kernel.resample(2)[0]
-        press_times = [2, -1]
         error = False
 
         if press_times[0] < 0:
             index_2d[0] -= 1
 
             if index_2d[0] < 0:
-                index_2d[0] = self.key_rows_num
+                index_2d[0] = self.key_rows_num - 1
 
             error=True
         elif press_times[0] >= self.scanning_delay:
@@ -364,7 +363,7 @@ class SimulatedUser:
             index_2d[1] -= 1
 
             if index_2d[1] == -1:
-                index_2d[1] = self.key_cols_nums[index_2d[0]]
+                index_2d[1] = self.key_cols_nums[index_2d[0]] - 1
 
             error = True
 
@@ -514,10 +513,7 @@ def main():
                 parameters_dict["words_first"] = wf
                 parameters_dict["num_words"] = nw
                 SU = SimulatedUser(job_num=1)
-                try:
-                    SU.parameter_metrics(parameters_dict, 500, 20)
-                except:
-                    continue
+                SU.parameter_metrics(parameters_dict, 500, 20)
 
 
     # SU = SimulatedUser(job_num=1)

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bcaf67c-e276-4639-92da-a1d9abae1c16" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulated_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulations/param_opt/param_opt.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulations/param_opt/param_opt.py" afterDir="false" />
     </list>
@@ -26,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simulated_user.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="377" lean-forward="true" selection-start-line="377" selection-end-line="377" />
+            <state relative-caret-position="363">
+              <caret line="344" column="21" lean-forward="true" selection-start-line="344" selection-start-column="21" selection-end-line="344" selection-end-column="21" />
               <folding>
                 <element signature="e#852#870#0" expanded="true" />
               </folding>
@@ -38,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulations/param_opt/param_opt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="527">
+              <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -144,8 +143,8 @@
         <option value="$PROJECT_DIR$/param_opt/param_opt.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/param_opt/sim_param_opt.sh" />
-        <option value="$PROJECT_DIR$/simulated_user.py" />
         <option value="$PROJECT_DIR$/simulations/param_opt/param_opt.py" />
+        <option value="$PROJECT_DIR$/simulated_user.py" />
       </list>
     </option>
   </component>
@@ -217,7 +216,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.param_opt (1)">
+  <component name="RunManager" selected="Python.simulated_user">
     <configuration name="config" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RowColScanner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -330,8 +329,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.param_opt (1)" />
         <item itemvalue="Python.simulated_user" />
+        <item itemvalue="Python.param_opt (1)" />
         <item itemvalue="Python.param_opt" />
         <item itemvalue="Python.keyboard" />
         <item itemvalue="Python.config" />
@@ -351,7 +350,7 @@
       <workItem from="1559936900959" duration="436000" />
       <workItem from="1560112830257" duration="15721000" />
       <workItem from="1560273550460" duration="13494000" />
-      <workItem from="1560312818353" duration="36703000" />
+      <workItem from="1560312818353" duration="37234000" />
     </task>
     <task id="LOCAL-00001" summary="first iteration">
       <created>1559937167370</created>
@@ -388,11 +387,18 @@
       <option name="project" value="LOCAL" />
       <updated>1560531040188</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fixed big in simulation clicking outside range">
+      <created>1560533088228</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1560533088228</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66354000" />
+    <option name="totallyTimeSpent" value="66885000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -412,7 +418,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.24945055" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24945055" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3989011" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -461,7 +467,8 @@
     <MESSAGE value="added multiple layouts and configurations for simulations&#10;added data collection and utilities" />
     <MESSAGE value="added Simulated User&#10;added Parameter Optimization Simulation" />
     <MESSAGE value="updated Parameter Optimization Simulation" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated Parameter Optimization Simulation" />
+    <MESSAGE value="fixed big in simulation clicking outside range" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed big in simulation clicking outside range" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RowColScanner$keyboard.coverage" NAME="keyboard Coverage Results" MODIFIED="1560461661660" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -470,8 +477,8 @@
     <SUITE FILE_PATH="coverage/RowColScanner$data_load.coverage" NAME="data_load Coverage Results" MODIFIED="1560311611447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$config.coverage" NAME="config Coverage Results" MODIFIED="1560452736196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$param_opt.coverage" NAME="param_opt Coverage Results" MODIFIED="1560529757138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/param_opt" />
-    <SUITE FILE_PATH="coverage/RowColScanner$param_opt__1_.coverage" NAME="param_opt (1) Coverage Results" MODIFIED="1560533051001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/param_opt" />
-    <SUITE FILE_PATH="coverage/RowColScanner$simulated_user.coverage" NAME="simulated_user Coverage Results" MODIFIED="1560532930607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$param_opt__1_.coverage" NAME="param_opt (1) Coverage Results" MODIFIED="1560533422405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/param_opt" />
+    <SUITE FILE_PATH="coverage/RowColScanner$simulated_user.coverage" NAME="simulated_user Coverage Results" MODIFIED="1560533571697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$kconfig.coverage" NAME="kconfig Coverage Results" MODIFIED="1560194075846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$char_freq.coverage" NAME="char_freq Coverage Results" MODIFIED="1560197795528" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$mainWindow.coverage" NAME="mainWindow Coverage Results" MODIFIED="1560450829713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -638,22 +645,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulated_user.py">
+    <entry file="file://$PROJECT_DIR$/simulations/param_opt/param_opt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="377" lean-forward="true" selection-start-line="377" selection-end-line="377" />
+        <state relative-caret-position="527">
+          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
           <folding>
-            <element signature="e#852#870#0" expanded="true" />
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulations/param_opt/param_opt.py">
+    <entry file="file://$PROJECT_DIR$/simulated_user.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="363">
+          <caret line="344" column="21" lean-forward="true" selection-start-line="344" selection-start-column="21" selection-end-line="344" selection-end-column="21" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#852#870#0" expanded="true" />
           </folding>
         </state>
       </provider>
