@@ -3,6 +3,7 @@ import numpy as np
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
+parentdir = os.path.dirname(parentdir)
 os.chdir(parentdir)
 
 from simulated_user import SimulatedUser
@@ -21,7 +22,6 @@ order_range = ["sorted", "default"]
 # order_range = ["sorted"]
 num_words_range = np.arange(0, 20, 1).tolist()
 print(num_words_range)
-
 parameters_list = []
 parameters_dict = dict()
 for wf in words_first_range:
