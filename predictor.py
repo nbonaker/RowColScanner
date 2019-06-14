@@ -144,7 +144,7 @@ class WordPredictor:
         context_words = context.split()
         for w in context_words:
             #print('Context', '{0}\t{1}'.format(model.BaseScore(state_in, w.lower(), state_out), w.lower()))
-            print('Context', '{0}\t{1}'.format(model.BaseScore(state_in, w, state_out), w))
+            # print('Context', '{0}\t{1}'.format(model.BaseScore(state_in, w, state_out), w))
             state_in = state_out
             state_out = kenlm.State()
 

@@ -33,7 +33,7 @@ class LanguageModel():
     def get_words(self, context, prefix, num_words):
         self.context = context
         self.prefix = prefix
-        print("prefix: ", prefix, ", context: ", context)
+        # print("prefix: ", prefix, ", context: ", context)
 
         word_preds = []
         word_probs = []

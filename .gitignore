@@ -1,4 +1,7 @@
 /venv/*
 /build/*
 /dist/*
+/sim_data*/
+/sim_dat*/
+/supercloud*/
 *.pyc

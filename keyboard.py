@@ -57,17 +57,6 @@ class Keyboard(MainWindow):
         super(Keyboard, self).__init__(screen_res)
 
         self.app = app
-        # get user data before initialization
-        # self.gen_data_handel()
-        #
-        # self.up_handel = PickleUtil(os.path.join(self.user_handel, 'user_preferences.p'))
-        # user_preferences = self.up_handel.safe_load()
-        # if user_preferences is None:
-        #     first_load = True
-        #     user_preferences = ['default', 1, False, 'alpha', 'off', 12, True]
-        #     self.up_handel.safe_save(user_preferences)
-        # else:
-        #     first_load = False
 
         self.font_scale = 1
 
@@ -81,14 +70,18 @@ class Keyboard(MainWindow):
         # self.words_first = False
 
         self.speed = config.default_rotate_ind
+        self.scanning_delay = config.period_li[self.speed]
+
         self.sound_set = True
+        self.pause_set = True
 
         self.lm_prefix = ""
         self.left_context = ""
-        self.typed_versions = []
+        self.typed_versions = [""]
 
         self.cwd = os.getcwd()
         self.gen_data_handel()
+        self.is_write_data = True
 
         self.params_handle_dict = {'speed': [], 'params': [], 'start': [], 'press': [], 'choice': []}
         self.num_presses = 0
@@ -135,7 +128,6 @@ class Keyboard(MainWindow):
         self.col_scan_num = -1
 
         self.init_ui()
-        self.update_phrases("")
 
         # animate
 
@@ -281,6 +273,10 @@ class Keyboard(MainWindow):
         self.sound_set = value
         self.mainWidget.sldLabel.setFocus()
 
+    def toggle_pause_button(self, value):
+        self.pause_set = value
+        self.mainWidget.sldLabel.setFocus()
+
     def draw_words(self):
         self.words_li = self.lm.get_words(self.left_context, self.lm_prefix, self.num_words)
 
@@ -294,7 +290,18 @@ class Keyboard(MainWindow):
             self.row_scan_num += 1
             if self.row_scan_num >= self.key_rows_num:
                 self.row_scan_num = 0
+
+            if self.row_scan_num == 0 and self.pause_set:
+                self.mainWidget.frame_timer.stop()
+                self.mainWidget.frame_timer.start((config.period_li[self.speed] + config.pause_length) * 1000)
+            else:
+                self.mainWidget.frame_timer.stop()
+                self.mainWidget.frame_timer.start(config.period_li[self.speed] * 1000)
+
         elif self.col_scan:
+            self.mainWidget.frame_timer.stop()
+            self.mainWidget.frame_timer.start(config.period_li[self.speed] * 1000)
+
             self.col_scan_num += 1
             if self.col_scan_num >= self.key_cols_nums[self.row_scan_num]:
                 self.col_scan_num = 0
@@ -316,7 +323,7 @@ class Keyboard(MainWindow):
         self.click_time_list.append((last_gap_time, index))
 
     def make_selection(self):
-        self.winner = self.key_layout[self.row_scan_num][self.col_scan_num]
+        self.winner = self.key_layout[max(0, self.row_scan_num)][max(0, self.col_scan_num)]
 
         self.draw_typed()
 
@@ -324,7 +331,8 @@ class Keyboard(MainWindow):
         self.mainWidget.update_grid()
         print(self.winner)
 
-        self.params_handle_dict['choice'].append([time.time(), self.winner == kconfig.mybad_char, self.typed_versions[-1]])
+        if self.is_write_data:
+            self.params_handle_dict['choice'].append([time.time(), self.winner == kconfig.mybad_char, self.typed_versions[-1]])
 
         self.col_scan = False
         self.row_scan = True

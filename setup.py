@@ -22,7 +22,7 @@ elif sys.platform == "win64":
     base = "Win64GUI"
 
 setup(name="Row Column Scanner",
-      version="1.0.0",
+      version="1.0.1",
       description = "Python 3, PyQt5",
       options={"build_exe": build_exe_options},
       executables=[Executable("keyboard.py", base=base,

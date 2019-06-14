@@ -5,7 +5,7 @@ import sys
 import config
 import kconfig
 from pickle_util import PickleUtil
-# from phrases import Phrases
+from phrases import Phrases
 import os
 import zipfile
 
@@ -27,11 +27,43 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mainWidget.init_ui()
         self.setCentralWidget(self.mainWidget)
 
+        # SimulatedUser Layout Menu Actions
+        self.default_layout_action = QtWidgets.QAction('&Alphabetical', self, checkable=True)
+        self.default_layout_action.triggered.connect(lambda: self.layout_change_event('default'))
+
+        self.sorted_layout_action = QtWidgets.QAction('&Frequency Sorted', self, checkable=True)
+        self.sorted_layout_action.triggered.connect(lambda: self.layout_change_event('sorted'))
+
+        # Word Location Action
+        self.top_word_action = QtWidgets.QAction('&Top (Default)', self, checkable=True)
+        self.top_word_action.triggered.connect(lambda: self.word_change_event('top'))
+
+        self.bottom_word_action = QtWidgets.QAction('&Bottom', self, checkable=True)
+        self.bottom_word_action.triggered.connect(lambda: self.word_change_event('bottom'))
+
+        # Phrase Prompts Action
+        self.phrase_prompts_action = QtWidgets.QAction('&Phrase Prompts', self, checkable=True)
+        self.phrase_prompts_action.triggered.connect(self.phrase_prompts_event)
+
         exit_action = QtWidgets.QAction('&Exit', self)
         exit_action.setShortcut('Ctrl+Q')
         exit_action.setStatusTip('Exit application')
         # exit_action.triggered.connect(QtWidgets.qApp.quit)
         exit_action.triggered.connect(self.closeEvent)
+
+        menubar = self.menuBar()
+        file_menu = menubar.addMenu('&File')
+        file_menu.addAction(exit_action)
+
+        # View Menu Actions
+        view_menu = menubar.addMenu('&View')
+        keyboard_menu = view_menu.addMenu('&Keybaord Layout')
+        keyboard_menu.addAction(self.default_layout_action)
+        keyboard_menu.addAction(self.sorted_layout_action)
+
+        word_menu = view_menu.addMenu('&Word Prediction Location')
+        word_menu.addAction(self.top_word_action)
+        word_menu.addAction(self.bottom_word_action)
 
         # Tools Menu Actions
         self.log_data_action = QtWidgets.QAction('&Data Logging', self, checkable=True)
@@ -54,7 +86,7 @@ class MainWindow(QtWidgets.QMainWindow):
         file_menu.addAction(exit_action)
 
         tools_menu = menubar.addMenu('&Tools')
-        # tools_menu.addAction(self.profanity_filter_action)
+        tools_menu.addAction(self.phrase_prompts_action)
         tools_menu.addAction(self.log_data_action)
         tools_menu.addAction(self.compress_data_action)
 
@@ -80,6 +112,75 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 unit.toggle()
 
+        # check layout
+        switch(self.default_layout_action, self.key_config == "default")
+        switch(self.sorted_layout_action, self.key_config == "sorted")
+
+        # check word count
+        switch(self.top_word_action, self.words_first)
+        switch(self.bottom_word_action, not self.words_first)
+
+        # check log data
+        switch(self.log_data_action, self.is_write_data)
+
+        switch(self.phrase_prompts_action, self.phrase_prompts)
+
+    def phrase_prompts_event(self):
+        if self.phrase_prompts:
+            phrase_status = False
+        else:
+            phrase_status = True
+
+        if self.phrases is None:
+            self.phrases = Phrases("resources/all_lower_nopunc.txt")
+
+        self.phrase_prompts = phrase_status
+        if phrase_status == True:
+            self.phrases.sample()
+            self.update_phrases(self.typed_versions[-1])
+        else:
+            self.typed_versions.append("")
+            self.left_context = ""
+            self.context = ""
+            self.typed = ""
+            self.lm_prefix = ""
+            self.mainWidget.text_box.setText("")
+
+        self.check_filemenu()
+
+    def word_change_event(self, location):
+        if location == 'top':
+            self.words_first = True
+        elif location == 'bottom':
+            self.words_first = False
+
+        self.check_filemenu()
+        self.generate_layout()
+
+        self.mainWidget = MainKeyboardWidget(self, self.key_chars, self.screen_res)
+        self.mainWidget.init_ui()
+        self.setCentralWidget(self.mainWidget)
+
+    def layout_change_event(self, layout):
+        message_box = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, "Change SimulatedUser Layout",
+                                            "This will change the clock "
+                                            "layout to <b>" + layout + "</b"
+                                                                       "> order. <b>NOTICE:</b> You "
+                                                                       "will have to restart Nomon for"
+                                                                       " these changes to take effect",
+                                            QtWidgets.QMessageBox.Cancel | QtWidgets.QMessageBox.Ok)
+        message_box.setDefaultButton(QtWidgets.QMessageBox.Cancel)
+        message_box.setWindowIcon(self.icon)
+
+        self.key_config = layout
+
+        self.check_filemenu()
+        self.generate_layout()
+
+        self.mainWidget = MainKeyboardWidget(self, self.key_chars, self.screen_res)
+        self.mainWidget.init_ui()
+        self.setCentralWidget(self.mainWidget)
+
     def log_data_event(self):
         message_box = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, "Data Logging Consent", "We would like to save "
                                   "some data regarding your clicking time relative to Noon to help us improve Nomon. "
@@ -94,21 +195,15 @@ class MainWindow(QtWidgets.QMainWindow):
         reply = message_box.exec_()
         
         if reply == QtWidgets.QMessageBox.No:
-            self.up_handel.safe_save(
-                [self.clock_type, self.font_scale, self.high_contrast, self.layout_preference, self.pf_preference,
-                 self.start_speed, False])
             self.is_write_data = False
         elif reply == QtWidgets.QMessageBox.Yes:
-            self.up_handel.safe_save(
-                [self.clock_type, self.font_scale, self.high_contrast, self.layout_preference, self.pf_preference,
-                 self.start_speed, True])
             self.is_write_data = True
         self.check_filemenu()
 
     def compress_data_event(self):
-        self.bc.save_when_quit()
+        self.save_data()
         data_save_path, _ = os.path.split(self.data_path)
-        data_zip_path = os.path.join(data_save_path, "nomon_data.zip")
+        data_zip_path = os.path.join(data_save_path, "row_col_data.zip")
         zf = zipfile.ZipFile(data_zip_path, "w")
         for dirname, subdirs, files in os.walk(self.data_path):
             sub_dirname = dirname[len(self.data_path):]
@@ -126,7 +221,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                                                            "Show Details\", and email the "
                                                                            "ZIP archive to the listed email address. We"
                                                                            " greatly appreciate your willingness to "
-                                                                           "help us make Nomon better!")
+                                                                           "help us make Row Column Scanner better!")
         message_box.setDetailedText("File Path: \n" + data_save_path + "\n\n Email: \nnomonstudy@gmail.com")
         message_box.addButton(QtWidgets.QMessageBox.Ok)
         message_box.setWindowIcon(self.icon)
@@ -136,22 +231,22 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def about_event(self):
         # noinspection PyTypeChecker
-        QtWidgets.QMessageBox.question(self, 'About Nomon', "Copyright 2009 Tamara Broderick\n"
-                                                        "This file is part of Nomon Keyboard.\n\n"
+        QtWidgets.QMessageBox.question(self, 'About Row Column Scanner', "Copyright 2009 Tamara Broderick\n"
+                                                        "This file is part of Row Column Scanner Keyboard.\n\n"
 
-                                                        "Nomon Keyboard is free software: you can redistribute "
+                                                        "Row Column Scanner Keyboard is free software: you can redistribute "
                                                         "it and/or modify the Free Software Foundation, either "
                                                         "version 3 of the License, or (at your option) any "
                                                         "later version.\n\n"
 
-                                                        "Nomon Keyboard is distributed in the hope that it will"
+                                                        "Row Column Scanner Keyboard is distributed in the hope that it will"
                                                         " be useful, but WITHOUT ANY WARRANTY; without even the"
                                                         " implied warranty of MERCHANTABILITY or FITNESS FOR A "
                                                         "PARTICULAR PURPOSE.  See the GNU General Public "
                                                         "License for more details.\n\n"
 
                                                         "You should have received a copy of the GNU General "
-                                                        "Public License along with Nomon Keyboard.  If not, see"
+                                                        "Public License along with Row Column Scanner Keyboard.  If not, see"
                                                         " <http://www.gnu.org/licenses/>.",
                                    QtWidgets.QMessageBox.Ok)
 
@@ -173,7 +268,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.in_pause = False
 
 
-
 class MainKeyboardWidget(QtWidgets.QWidget):
 
     def __init__(self, parent, layout, screen_res):
@@ -193,7 +287,7 @@ class MainKeyboardWidget(QtWidgets.QWidget):
         self.speed_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
         self.speed_slider.setRange(config.scale_min, config.scale_max)
         self.speed_slider.setValue(config.default_rotate_ind)
-        self.speed_slider_label = QtWidgets.QLabel('Clock Rotation Speed:')
+        self.speed_slider_label = QtWidgets.QLabel('Scanning Delay:')
 
         self.speed_slider_label.setFont(config.top_bar_font[self.parent.font_scale])
         self.sldLabel = QtWidgets.QLabel(str(self.speed_slider.value()))
@@ -205,9 +299,12 @@ class MainKeyboardWidget(QtWidgets.QWidget):
 
         # generate learn, speak, talk checkboxes
         self.cb_sound = QtWidgets.QCheckBox('Sound', self)
+        self.cb_pause = QtWidgets.QCheckBox('Pause', self)
 
         self.cb_sound.toggle()
+        self.cb_pause.toggle()
         self.cb_sound.setFont(config.top_bar_font[self.parent.font_scale])
+        self.cb_pause.setFont(config.top_bar_font[self.parent.font_scale])
 
         # generate label grid from layout
         self.layout_grid()
@@ -221,6 +318,7 @@ class MainKeyboardWidget(QtWidgets.QWidget):
 
         self.speed_slider.valueChanged[int].connect(self.change_value)
         self.cb_sound.toggled[bool].connect(self.parent.toggle_sound_button)
+        self.cb_pause.toggled[bool].connect(self.parent.toggle_pause_button)
 
         # layout slider and checkboxes
         top_hbox = QtWidgets.QHBoxLayout()
@@ -233,6 +331,7 @@ class MainKeyboardWidget(QtWidgets.QWidget):
 
         # top_hbox.addWidget(self.cb_talk, 1)
         top_hbox.addWidget(self.cb_sound, 1)
+        top_hbox.addWidget(self.cb_pause, 1)
         top_hbox.addStretch(1)
 
         # stack layouts vertically
@@ -351,7 +450,7 @@ class MainKeyboardWidget(QtWidgets.QWidget):
             for label in self.labels:
                 if label in self.labels_by_row[self.parent.row_scan_num]:
                     if self.labels_by_row[self.parent.row_scan_num].index(label) == self.parent.col_scan_num:
-                        label.setStyleSheet("border: 1px outset black; background-color:#7777ff")
+                        label.setStyleSheet("border: 1px outset black; background-color:#aa77ff")
                     else:
                         label.setStyleSheet("border: 1px outset black; background-color:#aaaaff")
                 else:
