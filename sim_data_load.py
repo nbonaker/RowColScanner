@@ -28,10 +28,16 @@ class SimDataUtil:
                     user_data = dict()
                     for file in files:
                         file_data = PickleUtil(os.path.join(path, file)).safe_load()
-                        params = (int(file_data[ 'order'] == "sorted"), file_data['words_first'], file_data['num_words'])
+
+                        if 'delay' in file_data:
+                            params = (int(file_data['order'] == "sorted"), file_data['words_first'],
+                                      file_data['num_words'], file_data['delay'])
+                        else:
+                            params = (int(file_data['order'] == "sorted"), file_data['words_first'], file_data['num_words'], 0.75)
                         print(params)
                         user_data[params] = file_data
                     data_by_user[int(user_dir)] = user_data
+
         return data_by_user
 
     def plot_across_user(self, metric, params=None, trends=False, log=False, legend=None):
@@ -131,6 +137,8 @@ class SimDataUtil:
                     for data_label in ['selections', 'characters', 'presses_char','presses_word', 'errors']:
                         average_data[param][data_label] += user_data[param][data_label]
 
+        print(average_data)
+
         num_words = list(set([param[2] for param in average_data]))
         num_words.sort()
         num_words.reverse()
@@ -141,6 +149,9 @@ class SimDataUtil:
         word_locs = list(set([param[1] for param in average_data]))
         word_locs.sort()
 
+        start_delays = list(set([param[3] for param in average_data]))
+        start_delays.sort()
+
         if len(list(average_data.keys())[0]) > 2:
             left_contexts = list(set([param[1] for param in average_data]))
             left_contexts.sort()
@@ -150,31 +161,32 @@ class SimDataUtil:
             x_labels = []
             for x_index, order in enumerate(orders):
                 for z_index, word_loc in enumerate(word_locs):
-                    if (order, word_loc, num_word) in average_data:
-                        x_labels.append(str(int(num_word)))
+                    for q_index, start_delay in enumerate(start_delays):
+                        if (order, word_loc, num_word, start_delay) in average_data:
+                            x_labels.append(str(int(num_word)))
 
-                        data_dict = average_data[(order, word_loc, num_word)]
+                            data_dict = average_data[(order, word_loc, num_word, start_delay)]
 
-                        all_data=[]
-                        for key in ['selections', 'characters', 'presses_char', 'presses_word', 'errors']:
-                            all_data += [data_dict[key]]
-                        data_points = np.array(all_data).T
+                            all_data=[]
+                            for key in ['selections', 'characters', 'presses_char', 'presses_word', 'errors']:
+                                all_data += [data_dict[key]]
+                            data_points = np.array(all_data).T
 
-                        for points in data_points.tolist():
-                            formatted_data_points.append(
-                                [num_word, order, word_loc]+points)
-        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Selections per Minute",
+                            for points in data_points.tolist():
+                                formatted_data_points.append(
+                                    [num_word, order, word_loc, start_delay]+points)
+        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Scan Start Delay", "Selections per Minute",
                       "Characters per Minute", "Presses per Character", "Presses per Word",
                       "Error Rate (Errors/Selection)"]
         df = pd.DataFrame(formatted_data_points, columns=df_columns)
         self.DF = df
 
-        self.DF["Words First | Alpha Sorted"] = self.DF["Words First"]
-        self.DF["Words First | Freq Sorted"] = self.DF["Words First"]
+        # self.DF["Words First | Alpha Sorted"] = self.DF["Words First"]
+        # self.DF["Words First | Freq Sorted"] = self.DF["Words First"]
 
     def plot_across_params(self):
 
-        ind_var_name = "Word Predictions Max Count"
+        ind_var_name = "Scan Start Delay"
         for data_label in ['errors', 'characters', 'selections', 'presses_char', 'presses_word']:
             if data_label == 'selections':
                 dep_var_name = "Selections per Minute"
@@ -197,12 +209,12 @@ class SimDataUtil:
             sns.set(font_scale=1.5, rc={"lines.linewidth": 3})
             sns.set_style({'font.serif': 'Helvetica'})
 
-            sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Freq Sorted",
-                                palette=sns.cubehelix_palette(2, start=2, rot=0.2, dark=.2, light=.7, reverse=True),
+            sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First",
+                                palette=sns.cubehelix_palette(1, start=2, rot=0.2, dark=.2, light=.7, reverse=True),
                          data=DF[DF["Frequency Sorted"] == 1], ci="sd", ax=ax)
-            sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Alpha Sorted",
-                         palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2, light=.7, reverse=True),
-                         data=DF[DF["Frequency Sorted"] == 0], ci="sd", ax=ax)
+            # sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Alpha Sorted",
+            #              palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2/, light=.7, reverse=True),
+            #              data=DF[DF["Frequency Sorted"] == 0], ci="sd", ax=ax)
 
             plt.title("Row Column Scanner: "+dep_var_name+" vs. "+ind_var_name)
             sns.axes_style("darkgrid")
@@ -243,7 +255,7 @@ def main():
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/param_opt/supercloud_results")
+    sdu = SimDataUtil("simulations/delay_opt/supercloud_results")
     # sdu.DF
     sdu.plot_across_params()
 

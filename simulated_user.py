@@ -70,6 +70,7 @@ class SimulatedUser:
             self.speed = config.default_rotate_ind
             self.scanning_delay = config.period_li[self.speed]
             self.start_scan_delay = config.pause_length
+            self.reaction_delay = 0.5
         self.sound_set = True
         self.pause_set = True
 
@@ -347,6 +348,9 @@ class SimulatedUser:
     def make_selection(self, index_2d, verbose=True):
         selection_time = self.timing_map[index_2d[0], index_2d[1]]
 
+        if self.timing_map[index_2d[0], 0] < self.reaction_delay:
+            selection_time += self.timing_map[-1][0] + self.scanning_delay
+
         press_times = self.kde_kernel.resample(2)[0]
         error = False
 
@@ -463,6 +467,7 @@ class SimulatedUser:
         data_dict["order"] = self.key_config
         data_dict["words_first"] = self.words_first
         data_dict["num_words"] = self.num_word_preds
+        data_dict["delay"] = self.start_scan_delay
         data_dict["errors"] = self.error_rate_avg
         data_dict["selections"] = self.sel_per_min
         data_dict["characters"] = self.char_per_min
