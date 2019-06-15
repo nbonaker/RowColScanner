@@ -65,7 +65,7 @@ class Keyboard(MainWindow):
         self.key_config = "sorted"
         # self.key_config = "default"
 
-        self.num_words = 20
+        self.num_words = 7
         self.words_first = True
         # self.words_first = False
 

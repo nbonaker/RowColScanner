@@ -63,13 +63,13 @@ class SimulatedUser:
             self.key_config = "sorted"
             # self.key_config = "default"
 
-            self.num_word_preds = 10
+            self.num_word_preds = 7
             self.words_first = True
             # self.words_first = False
 
             self.speed = config.default_rotate_ind
             self.scanning_delay = config.period_li[self.speed]
-
+            self.start_scan_delay = config.pause_length
         self.sound_set = True
         self.pause_set = True
 
@@ -165,6 +165,11 @@ class SimulatedUser:
             self.num_word_preds = parameters["num_words"]
         else:
             self.num_word_preds = 6
+
+        if "delay" in parameters:
+            self.start_scan_delay = parameters["delay"]
+        else:
+            self.start_scan_delay = 6
 
         self.draw_words()
         self.generate_layout()
@@ -319,10 +324,11 @@ class SimulatedUser:
             if row == 0:
                 row_offset = 0
             else:
-                row_offset = self.scanning_delay*row + config.pause_length
+                row_offset = self.scanning_delay*row + self.start_scan_delay
             self.timing_map += [[row_offset + i * self.scanning_delay for i in range(len(self.key_layout[row]))]]
 
         self.timing_map = np.array(self.timing_map)
+        print(self.timing_map)
 
     def draw_words(self):
         self.words_li = self.lm.get_words(self.left_context, self.lm_prefix, self.num_word_preds)
@@ -449,7 +455,8 @@ class SimulatedUser:
     def save_simulation_data(self, attribute=None):
         data_file = os.path.join(self.data_loc, "sorted_"+str(int(self.key_config == "sorted"))
                                  +"_nwords_"+str(self.num_word_preds)
-                                 +"_wf_"+str(int(self.words_first))+".p")
+                                 +"_wf_"+str(int(self.words_first)) +
+                                 "_delay_"+str(round(self.start_scan_delay, 2))+".p")
         data_handel = PickleUtil(data_file)
 
         data_dict = dict()
@@ -512,6 +519,7 @@ def main():
                 parameters_dict["order"] = kc
                 parameters_dict["words_first"] = wf
                 parameters_dict["num_words"] = nw
+                parameters_dict["delay"] = 1.5
                 SU = SimulatedUser(job_num=1)
                 SU.parameter_metrics(parameters_dict, 500, 20)
 
