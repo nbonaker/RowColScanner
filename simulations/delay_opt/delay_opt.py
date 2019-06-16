@@ -39,4 +39,4 @@ for job_index in job_indicies:
     user_num = int((job_index*0.999)/num_jobs)
     print(user_num)
     sim = SimulatedUser(parentdir, job_num=user_num)
-    sim.parameter_metrics(parameters, num_clicks=500, trials=30)
+    sim.parameter_metrics(parameters, num_clicks=500, trials=20)

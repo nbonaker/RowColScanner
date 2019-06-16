@@ -250,12 +250,13 @@ def order_data(dir):
 
 
 def main():
+
     # sdu = SimDataUtil("simulations/increasing_variance/supercloud_results")
     # plot_legend = {"title": "MSE Improvement of Nomon KDE vs Click Distribution Variance", "x": "Standard Deviation (# hist bins)",
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/delay_opt/supercloud_results")
+    sdu = SimDataUtil("simulations/delay_opt/supercloud_results_delay")
     # sdu.DF
     sdu.plot_across_params()
 
