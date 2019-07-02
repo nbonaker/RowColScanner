@@ -30,8 +30,8 @@ current_folder= os.path.dirname(os.path.abspath(__file__))
 ### Clock animation parameters ###
 # time for single rotation of the clock
 # time_rotate = 1.2 #1.35 #2.0**(0.5)
-period_li = np.arange(1.5, 0.2, -0.075).tolist()
-pause_length = 0.5
+period_li = np.arange(1.5, 0.2, -0.1).tolist()
+pause_length = 0
 
 scale_min = 1
 scale_max = len(period_li) - 1

@@ -21,12 +21,13 @@
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 
-from mainWindow import MainWindow
+# from mainWindow import MainWindow
 # import dtree
-from keyboard import Keyboard
+# from keyboard import Keyboard
 from kenlm_lm import LanguageModel
 from phrases import Phrases
 from pickle_util import PickleUtil
+from scipy import stats
 
 import sys
 import os
@@ -70,7 +71,10 @@ class SimulatedUser:
             self.speed = config.default_rotate_ind
             self.scanning_delay = config.period_li[self.speed]
             self.start_scan_delay = config.pause_length
-            self.reaction_delay = 1
+            self.reaction_delay = 0
+
+            self.kernel_handle = PickleUtil("resources/kde_kernel.p")
+            self.kde_kernel = self.kernel_handle.safe_load()
         self.sound_set = True
         self.pause_set = True
 
@@ -94,9 +98,6 @@ class SimulatedUser:
         vocab_path = os.path.join(os.path.join(self.cwd, 'resources'), 'vocab_100k')
 
         self.lm = LanguageModel(lm_path, vocab_path)
-
-        self.kernel_handle = PickleUtil("resources/kde_kernel.p")
-        self.kde_kernel = self.kernel_handle.safe_load()
 
         self.phrase_prompts = True
         if self.phrase_prompts:
@@ -165,12 +166,17 @@ class SimulatedUser:
         if "num_words" in parameters:
             self.num_word_preds = parameters["num_words"]
         else:
-            self.num_word_preds = 6
+            self.num_word_preds = 7
 
         if "delay" in parameters:
             self.start_scan_delay = parameters["delay"]
         else:
-            self.start_scan_delay = 6
+            self.start_scan_delay = config.pause_length
+
+        if "click_dist" in parameters:
+            self.kde_kernel = parameters["click_dist"]
+        else:
+            pass
 
         self.draw_words()
         self.generate_layout()
@@ -351,7 +357,13 @@ class SimulatedUser:
         if self.timing_map[min(index_2d[0]+1, self.key_rows_num - 1), 0] < self.reaction_delay:
             selection_time += self.timing_map[-1][0] + self.scanning_delay
 
-        press_times = self.kde_kernel.resample(2)[0]
+        if isinstance(self.kde_kernel, stats.kde.gaussian_kde):
+            press_times = self.kde_kernel.resample(2)[0]
+        elif isinstance(self.kde_kernel, stats._distn_infrastructure.rv_frozen):
+            press_times = self.kde_kernel.rvs(size=2)
+        else:
+            raise(TypeError("Unknown Click Time Distribution Type"))
+
         error = False
 
         if press_times[0] < 0:
@@ -360,7 +372,8 @@ class SimulatedUser:
             if index_2d[0] < 0:
                 index_2d[0] = self.key_rows_num - 1
 
-            error=True
+            error = True
+
         elif press_times[0] >= self.scanning_delay:
             index_2d[0] += 1
 
@@ -457,10 +470,18 @@ class SimulatedUser:
             self.left_context = cur_text[:(-len(self.lm_prefix) - 1)]
 
     def save_simulation_data(self, attribute=None):
-        data_file = os.path.join(self.data_loc, "sorted_"+str(int(self.key_config == "sorted"))
-                                 +"_nwords_"+str(self.num_word_preds)
-                                 +"_wf_"+str(int(self.words_first)) +
-                                 "_delay_"+str(round(self.start_scan_delay, 2))+".p")
+        if attribute is not None:
+            data_file = os.path.join(self.data_loc, "sorted_" + str(int(self.key_config == "sorted"))
+                                     + "_nwords_" + str(self.num_word_preds)
+                                     + "_wf_" + str(int(self.words_first)) +
+                                     "_delay_" + str(round(self.start_scan_delay, 2)) +
+                                     "_atr_" + str(attribute) + ".p")
+        else:
+            data_file = os.path.join(self.data_loc, "sorted_"+str(int(self.key_config == "sorted"))
+                                    +"_nwords_"+str(self.num_word_preds)
+                                    +"_wf_"+str(int(self.words_first)) +
+                                    "_delay_"+str(round(self.start_scan_delay, 2))+".p")
+
         data_handel = PickleUtil(data_file)
 
         data_dict = dict()

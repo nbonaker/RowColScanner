@@ -187,7 +187,7 @@ class SimDataUtil:
     def plot_across_params(self):
 
         ind_var_name = "Scan Start Delay"
-        for data_label in ['errors', 'characters', 'selections', 'presses_char', 'presses_word']:
+        for data_label in ['errors', 'errors', 'characters', 'selections', 'presses_char', 'presses_word']:
             if data_label == 'selections':
                 dep_var_name = "Selections per Minute"
             elif data_label == 'characters':
@@ -256,7 +256,7 @@ def main():
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/delay_opt/supercloud_results_delay")
+    sdu = SimDataUtil("simulations/delay_opt/supercloud_results")
     # sdu.DF
     sdu.plot_across_params()
 
