@@ -217,7 +217,6 @@ class SimulatedUser:
             target_item, self.target_text = self.next_target(self.target_text)
             self.make_selection(target_item, verbose=verbose)
 
-        self.num_chars += len(text)
 
         words = text.split(" ")
         if "" in words:
@@ -405,6 +404,8 @@ class SimulatedUser:
             if verbose:
                 print("ERROR")
             self.num_errors += 1
+        else:
+            self.num_selections += 1
 
         self.winner = self.key_map[index_2d[0], index_2d[1]]
         selection_time += sum(press_times)
@@ -415,7 +416,6 @@ class SimulatedUser:
             print("    Typed \"" + self.winner + "\"")
 
         self.num_presses += 2
-        self.num_selections += 1
         self.time.set_time(self.time.time()+selection_time)
 
 
@@ -434,6 +434,8 @@ class SimulatedUser:
             new_text = new_text[len(self.lm_prefix):]
         else:
             new_text = self.winner
+
+        self.num_chars += len(new_text)
 
         if self.winner == kconfig.back_char:
             if self.typed_versions[-1] != '':
