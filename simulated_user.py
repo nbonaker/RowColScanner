@@ -198,7 +198,7 @@ class SimulatedUser:
 
             print("selections per minute: ", self.num_selections / (self.time.time() / 60))
             print("characters per minute: ", self.num_chars / (self.time.time() / 60))
-            print("presses per character: ", self.num_presses / self.num_chars)
+            print("presses per character: ", self.num_presses / (self.num_chars + 1))
             print("presses per word: ", self.num_presses / self.num_words)
             print("error rate: ", self.num_errors / (self.num_selections + 1))
 
@@ -261,11 +261,11 @@ class SimulatedUser:
 
         self.char_per_min += [self.num_chars / (time_int / 60)]
 
-        self.press_per_char += [self.num_presses / self.num_chars]
+        self.press_per_char += [self.num_presses / (self.num_chars + 1)]
 
-        self.press_per_word += [self.num_presses / self.num_words]
+        self.press_per_word += [self.num_presses / (self.num_words + 1)]
 
-        self.error_rate_avg += [self.num_errors / self.num_selections]
+        self.error_rate_avg += [self.num_errors / (self.num_selections + 1)]
 
     def generate_layout(self):
         if self.key_config == "sorted":
@@ -404,8 +404,7 @@ class SimulatedUser:
             if verbose:
                 print("ERROR")
             self.num_errors += 1
-        else:
-            self.num_selections += 1
+        self.num_selections += 1
 
         self.winner = self.key_map[index_2d[0], index_2d[1]]
         selection_time += sum(press_times)
@@ -419,11 +418,11 @@ class SimulatedUser:
         self.time.set_time(self.time.time()+selection_time)
 
 
-        self.draw_typed()
+        self.draw_typed(error=error)
         self.draw_words()
         self.update_layout()
 
-    def draw_typed(self):
+    def draw_typed(self, error=False):
         if len(self.typed_versions) > 0:
             previous_text = self.typed_versions[-1]
         else:
@@ -435,7 +434,8 @@ class SimulatedUser:
         else:
             new_text = self.winner
 
-        self.num_chars += len(new_text)
+        if not error:
+            self.num_chars += len(new_text)
 
         if self.winner == kconfig.back_char:
             if self.typed_versions[-1] != '':
