@@ -1,7 +1,7 @@
 import os,sys,inspect
 import numpy as np
 from scipy import stats
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -18,17 +18,17 @@ try:
     my_task_id = int(sys.argv[1])
     num_tasks = int(sys.argv[2])
 except IndexError:
-    my_task_id = 2
+    my_task_id = 1
     num_tasks = 12
 
 
-normal = stats.norm(0, 1)
-print(type(normal))
-print(normal.rvs())
 
 deltas = [i/10 for i in range(10)]+[i/2+1 for i in range(7)]
 print(deltas)
 click_dists = [(stats.norm(delta, 0.05), delta) for delta in deltas]
+
+# plt.plot(np.arange(-2,2,0.01), click_dists[7][0].pdf(np.arange(-2,2,0.01)))
+# plt.show()
 
 parameters_list = []
 parameters_dict = dict()

@@ -20,6 +20,7 @@
 
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
+# from matplotlib import pyplot as plt
 
 # from mainWindow import MainWindow
 # import dtree
@@ -357,10 +358,12 @@ class SimulatedUser:
         if self.timing_map[min(index_2d[0]+1, self.key_rows_num - 1), 0] < self.reaction_delay:
             selection_time += self.timing_map[-1][0] + self.scanning_delay
 
+        # noinspection PyProtectedMember
         if isinstance(self.kde_kernel, stats.kde.gaussian_kde):
             press_times = self.kde_kernel.resample(2)[0]
         elif isinstance(self.kde_kernel, stats._distn_infrastructure.rv_frozen):
-            press_times = self.kde_kernel.rvs(size=2)
+            press_times = [t + self.scanning_delay/2 for t in self.kde_kernel.rvs(size=2)]
+
         else:
             raise(TypeError("Unknown Click Time Distribution Type"))
 

@@ -29,7 +29,10 @@ class SimDataUtil:
                     for file in files:
                         file_data = PickleUtil(os.path.join(path, file)).safe_load()
 
-                        if 'delay' in file_data:
+                        if 'attribute' in file_data:
+                            params = (int(file_data['order'] == "sorted"), file_data['words_first'],
+                                      file_data['num_words'], file_data['attribute'])
+                        elif 'delay' in file_data:
                             params = (int(file_data['order'] == "sorted"), file_data['words_first'],
                                       file_data['num_words'], file_data['delay'])
                         else:
@@ -60,10 +63,7 @@ class SimDataUtil:
 
                 dep_vars += [user_data[params][m]]
                 if "attribute" in user_data[params]:
-                    if "supercloud_results_20" in self.data_directory:
-                        ind_vars += [user_data[params]["attribute"]*4]
-                    else:
-                        ind_vars += [user_data[params]["attribute"]]
+                    ind_vars += [user_data[params]["attribute"]]
                 else:
                     ind_vars += [user]
 
@@ -209,9 +209,8 @@ class SimDataUtil:
             sns.set(font_scale=1.5, rc={"lines.linewidth": 3})
             sns.set_style({'font.serif': 'Helvetica'})
 
-            sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First",
-                                palette=sns.cubehelix_palette(1, start=2, rot=0.2, dark=.2, light=.7, reverse=True),
-                         data=DF[DF["Frequency Sorted"] == 1], ci="sd", ax=ax)
+            sns.lineplot(x=ind_var_name, y=dep_var_name,
+                         data=DF, ci="sd", ax=ax)
             # sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Alpha Sorted",
             #              palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2/, light=.7, reverse=True),
             #              data=DF[DF["Frequency Sorted"] == 0], ci="sd", ax=ax)
@@ -256,7 +255,7 @@ def main():
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/delay_opt/supercloud_results")
+    sdu = SimDataUtil("simulations/click_time_delay/supercloud_results")
     # sdu.DF
     sdu.plot_across_params()
 
@@ -266,7 +265,7 @@ def main():
     #
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=False, log=False, legend=plot_legend)
 
-    # sdu.plot_across_user(["selections", "presses"], (3, 0.008))
+    # sdu.plot_across_user(("selections", (3, 0.008))
     # sdu.plot_across_user("errors", (3, 0.008))
 
     # sdu.plot_across_user(["kde_mses", "errors"], (3, 0.008), trends=True)
