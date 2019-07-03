@@ -179,6 +179,11 @@ class SimulatedUser:
         else:
             pass
 
+        if "scan_delay" in parameters:
+            self.scanning_delay = parameters["scan_delay"]
+        else:
+            self.scanning_delay = config.period_li[self.speed]
+
         self.draw_words()
         self.generate_layout()
         self.update_layout()
@@ -480,6 +485,7 @@ class SimulatedUser:
                                      + "_nwords_" + str(self.num_word_preds)
                                      + "_wf_" + str(int(self.words_first)) +
                                      "_delay_" + str(round(self.start_scan_delay, 2)) +
+                                     "_scan_" + str(self.scanning_delay) +
                                      "_atr_" + str(attribute) + ".p")
         else:
             data_file = os.path.join(self.data_loc, "sorted_"+str(int(self.key_config == "sorted"))
@@ -494,6 +500,7 @@ class SimulatedUser:
         data_dict["words_first"] = self.words_first
         data_dict["num_words"] = self.num_word_preds
         data_dict["delay"] = self.start_scan_delay
+        data_dict["scan_delay"] = self.scanning_delay
         data_dict["errors"] = self.error_rate_avg
         data_dict["selections"] = self.sel_per_min
         data_dict["characters"] = self.char_per_min

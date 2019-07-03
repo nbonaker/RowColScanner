@@ -18,7 +18,7 @@ try:
     my_task_id = int(sys.argv[1])
     num_tasks = int(sys.argv[2])
 except IndexError:
-    my_task_id = 16
+    my_task_id = 15
     num_tasks = 17
 
 
@@ -34,12 +34,17 @@ parameters_list = []
 parameters_dict = dict()
 
 for dist in click_dists:
-    parameters_dict["order"] = "default"
-    parameters_dict["words_first"] = True
-    parameters_dict["num_words"] = 0
-    parameters_dict["click_dist"] = dist[0]
-    parameters_dict["attribute"] = dist[1]
-    parameters_list += [parameters_dict.copy()]
+    delta = dist[1]
+    scan_delays = list({0.5, max(0.5, delta + 3 * 0.05)})
+    print(scan_delays)
+    for scan_delay in scan_delays:
+        parameters_dict["order"] = "default"
+        parameters_dict["words_first"] = True
+        parameters_dict["num_words"] = 0
+        parameters_dict["click_dist"] = dist[0]
+        parameters_dict["attribute"] = dist[1]
+        parameters_dict["scan_delay"] = scan_delay
+        parameters_list += [parameters_dict.copy()]
 
 print(len(parameters_list))
 num_jobs = len(parameters_list)
