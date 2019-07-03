@@ -18,12 +18,12 @@ try:
     my_task_id = int(sys.argv[1])
     num_tasks = int(sys.argv[2])
 except IndexError:
-    my_task_id = 15
+    my_task_id = 10
     num_tasks = 17
 
 
 
-deltas = [i/10 for i in range(10)]+[i/2+1 for i in range(7)]
+deltas = [i/20 for i in range(10)]+[i/10 +0.5 for i in range(5)]+[i/2+1 for i in range(7)]
 print(deltas)
 click_dists = [(stats.norm(delta, 0.05), delta) for delta in deltas]
 
@@ -35,7 +35,7 @@ parameters_dict = dict()
 
 for dist in click_dists:
     delta = dist[1]
-    scan_delays = list({0.5, max(0.5, delta + 3 * 0.05)})
+    scan_delays = list({0.5, max(0.5, delta + 6 * 0.05)})
     print(scan_delays)
     for scan_delay in scan_delays:
         parameters_dict["order"] = "default"
@@ -56,4 +56,4 @@ for job_index in job_indicies:
     user_num = int((job_index*0.999)/num_jobs)
     print(user_num)
     sim = SimulatedUser(parentdir, job_num=user_num)
-    sim.parameter_metrics(parameters, num_clicks=500, trials=20, attribute=parameters["attribute"])
+    sim.parameter_metrics(parameters, num_clicks=500, trials=1, attribute=parameters["attribute"])

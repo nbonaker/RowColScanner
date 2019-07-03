@@ -31,7 +31,7 @@ class SimDataUtil:
 
                         if 'attribute' in file_data:
                             params = (int(file_data['order'] == "sorted"), file_data['words_first'],
-                                      file_data['num_words'], file_data['attribute'])
+                                      file_data['num_words'], file_data['attribute'], file_data['scan_delay'])
                         elif 'delay' in file_data:
                             params = (int(file_data['order'] == "sorted"), file_data['words_first'],
                                       file_data['num_words'], file_data['delay'])
@@ -152,6 +152,8 @@ class SimDataUtil:
         start_delays = list(set([param[3] for param in average_data]))
         start_delays.sort()
 
+        scan_delays = list(set([param[4] for param in average_data]))
+
         if len(list(average_data.keys())[0]) > 2:
             left_contexts = list(set([param[1] for param in average_data]))
             left_contexts.sort()
@@ -162,25 +164,27 @@ class SimDataUtil:
             for x_index, order in enumerate(orders):
                 for z_index, word_loc in enumerate(word_locs):
                     for q_index, start_delay in enumerate(start_delays):
-                        if (order, word_loc, num_word, start_delay) in average_data:
-                            x_labels.append(str(int(num_word)))
+                        for r_index, scan_delay in enumerate(scan_delays):
+                            if (order, word_loc, num_word, start_delay, scan_delay) in average_data:
+                                x_labels.append(str(int(num_word)))
 
-                            data_dict = average_data[(order, word_loc, num_word, start_delay)]
+                                data_dict = average_data[(order, word_loc, num_word, start_delay, scan_delay)]
 
-                            all_data=[]
-                            for key in ['selections', 'characters', 'presses_char', 'presses_word', 'errors']:
-                                all_data += [data_dict[key]]
-                            data_points = np.array(all_data).T
+                                all_data=[]
+                                for key in ['selections', 'characters', 'presses_char', 'presses_word', 'errors']:
+                                    all_data += [data_dict[key]]
+                                data_points = np.array(all_data).T
 
-                            for points in data_points.tolist():
-                                formatted_data_points.append(
-                                    [num_word, order, word_loc, start_delay]+points)
-        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Scan Start Delay", "Selections per Minute",
+                                for points in data_points.tolist():
+                                    formatted_data_points.append(
+                                        [num_word, order, word_loc, start_delay, scan_delay]+points)
+        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Scan Start Delay", "Scanning Delay", "Selections per Minute",
                       "Characters per Minute", "Presses per Character", "Presses per Word",
                       "Error Rate (Errors/Selection)"]
         df = pd.DataFrame(formatted_data_points, columns=df_columns)
         self.DF = df
 
+        self.DF["Adjusted Scanning Delay"] = self.DF["Scanning Delay"] == 0.5
         # self.DF["Words First | Alpha Sorted"] = self.DF["Words First"]
         # self.DF["Words First | Freq Sorted"] = self.DF["Words First"]
 
@@ -209,11 +213,11 @@ class SimDataUtil:
             sns.set(font_scale=1.5, rc={"lines.linewidth": 3})
             sns.set_style({'font.serif': 'Helvetica'})
 
-            sns.lineplot(x=ind_var_name, y=dep_var_name,
+            # sns.lineplot(x=ind_var_name, y=dep_var_name,
+            #              data=DF, ci="sd", ax=ax)
+            sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Adjusted Scanning Delay",
+                         palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2, light=.7, reverse=True),
                          data=DF, ci="sd", ax=ax)
-            # sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Alpha Sorted",
-            #              palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2/, light=.7, reverse=True),
-            #              data=DF[DF["Frequency Sorted"] == 0], ci="sd", ax=ax)
 
             plt.title("Row Column Scanner: "+dep_var_name+" vs. "+ind_var_name)
             sns.axes_style("darkgrid")
