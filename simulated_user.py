@@ -200,7 +200,7 @@ class SimulatedUser:
             print("characters per minute: ", self.num_chars / (self.time.time() / 60))
             print("presses per character: ", self.num_presses / self.num_chars)
             print("presses per word: ", self.num_presses / self.num_words)
-            print("error rate: ", self.num_errors / self.num_selections)
+            print("error rate: ", self.num_errors / (self.num_selections + 1))
 
             self.update_sim_averages(trials)
 

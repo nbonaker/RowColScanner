@@ -18,8 +18,8 @@ try:
     my_task_id = int(sys.argv[1])
     num_tasks = int(sys.argv[2])
 except IndexError:
-    my_task_id = 1
-    num_tasks = 12
+    my_task_id = 16
+    num_tasks = 17
 
 
 
