@@ -71,7 +71,8 @@ class SimulatedUser:
 
             self.speed = config.default_rotate_ind
             self.scanning_delay = config.period_li[self.speed]
-            self.start_scan_delay = config.pause_length
+            self.start_scan_delay = config.pause_li[config.default_pause_ind]
+
             self.reaction_delay = 0
 
             self.kernel_handle = PickleUtil("resources/kde_kernel.p")
@@ -172,7 +173,7 @@ class SimulatedUser:
         if "delay" in parameters:
             self.start_scan_delay = parameters["delay"]
         else:
-            self.start_scan_delay = config.pause_length
+            self.start_scan_delay = config.pause_li[config.default_pause_ind]
 
         if "click_dist" in parameters:
             self.kde_kernel = parameters["click_dist"]
@@ -180,7 +181,7 @@ class SimulatedUser:
             pass
 
         if "scan_delay" in parameters:
-            self.scanning_delay = parameters["scan_delay"]
+            self.scanning_delay = config.period_li[parameters["scan_delay"]]
         else:
             self.scanning_delay = config.period_li[self.speed]
 
@@ -365,6 +366,8 @@ class SimulatedUser:
         # noinspection PyProtectedMember
         if isinstance(self.kde_kernel, stats.kde.gaussian_kde):
             press_times = self.kde_kernel.resample(2)[0]
+            time_scale = config.period_li[config.default_rotate_ind]/self.scanning_delay
+            press_times = [t*time_scale for t in press_times]
         elif isinstance(self.kde_kernel, stats._distn_infrastructure.rv_frozen):
             press_times = [t + self.scanning_delay/2 for t in self.kde_kernel.rvs(size=2)]
 

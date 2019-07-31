@@ -39,6 +39,7 @@ class LanguageModel():
         word_probs = []
 
         lm_results = self.word_predictor.get_words_with_context(prefix, context, self.vocab_id, self.num_predictions, self.min_log_prob)
+
         flattened_results = [freq for sublist in lm_results for freq in sublist]
         flattened_results.sort(key=lambda x: -x[1])
         return [word[0] for word in flattened_results][:num_words]
@@ -46,8 +47,8 @@ class LanguageModel():
 
 def main():
 
-    LM = LanguageModel('../keyboard/resources/lm_word_medium.kenlm', '../keyboard/resources/vocab_100k')
-    print(LM.get_words("", "", list("abcdefghijklmnopqrstuvwxyz' ")))
+    LM = LanguageModel('resources/lm_word_medium.kenlm', 'resources/vocab_100k')
+    print(LM.get_words("hello ", "", 7))
 
     # # Provide the name and path of a language model and the vocabulary
     # lm_filename = '../resources/lm_word_medium.kenlm'

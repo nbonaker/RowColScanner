@@ -3,5 +3,5 @@
 /dist/*
 /sim_data*/
 /sim_dat*/
-/supercloud*/
+superclou*/
 *.pyc

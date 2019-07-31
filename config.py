@@ -30,16 +30,29 @@ current_folder= os.path.dirname(os.path.abspath(__file__))
 ### Clock animation parameters ###
 # time for single rotation of the clock
 # time_rotate = 1.2 #1.35 #2.0**(0.5)
-period_li = np.arange(1.5, 0.2, -0.1).tolist()
-pause_length = 0
+period_li = np.arange(21)
+period_li = 1.5*np.exp(-period_li/11)
+print(period_li)
+
+
+pause_li = np.arange(11)
+pause_li = (1-pause_li/10)
+print(pause_li)
 
 scale_min = 1
 scale_max = len(period_li) - 1
+
+extra_scale_min = 1
+extra_scale_max = len(pause_li) - 1
+
 default_rotate_ind = 10  # 19 # (22,) 19, 16, 13, 10, 7
+default_pause_ind = 5
 # number of clock divisions that register as a unique place to click
 num_divs_click = 80
 # seconds / frame; display update rate to aim for
 ideal_wait_s = 0.05
+# auto save time in minutes
+auto_save_time = 1
 # starting point of the highest scorer
 frac_period = 4.0 / 8.0  # 4.0/8.0 # 7, 6, 5, 4, 3, 2, 1
 theta0 = frac_period * 2.0 * np.pi  # numpy.pi

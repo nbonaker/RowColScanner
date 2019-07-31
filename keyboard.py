@@ -26,6 +26,7 @@ from mainWindow import MainWindow
 from kenlm_lm import LanguageModel
 from phrases import Phrases
 from pickle_util import PickleUtil
+from text_stats import calc_MSD
 
 import sys
 import os
@@ -69,9 +70,6 @@ class Keyboard(MainWindow):
         self.words_first = True
         # self.words_first = False
 
-        self.speed = config.default_rotate_ind
-        self.scanning_delay = config.period_li[self.speed]
-
         self.sound_set = True
         self.pause_set = True
 
@@ -81,27 +79,38 @@ class Keyboard(MainWindow):
 
         self.cwd = os.getcwd()
         self.gen_data_handel()
-        self.is_write_data = True
 
-        self.params_handle_dict = {'speed': [], 'params': [], 'start': [], 'press': [], 'choice': []}
+        self.up_handel = PickleUtil(os.path.join(self.user_handel, 'user_preferences.p'))
+        user_preferences = self.up_handel.safe_load()
+
+        if user_preferences is None:
+            user_preferences = ['sorted', config.default_rotate_ind, config.default_pause_ind, True]
+            self.up_handel.safe_save(user_preferences)
+
+        self.key_config, self.speed, self.pause_index, self.is_write_data = user_preferences
+
+        self.scanning_delay = config.period_li[self.speed]
+        self.extra_delay = config.pause_li[self.pause_index]
+
+        self.params_handle_dict = {'speed': [], 'extra_delay': [], 'params': [], 'start': [], 'press': [], 'choice': []}
         self.num_presses = 0
 
         self.last_press_time = time.time()
         self.last_update_time = time.time()
+        self.next_frame_time = time.time()
 
         self.params_handle_dict['params'].append([config.period_li[config.default_rotate_ind], config.theta0])
         self.params_handle_dict['start'].append(time.time())
         self.click_time_list = []
-        self.change_speed(config.default_rotate_ind)
 
         lm_path = os.path.join(os.path.join(self.cwd, 'resources'), 'lm_word_medium.kenlm')
         vocab_path = os.path.join(os.path.join(self.cwd, 'resources'), 'vocab_100k')
 
         self.lm = LanguageModel(lm_path, vocab_path)
 
-        self.phrase_prompts = True
+        self.phrase_prompts = False
         if self.phrase_prompts:
-            self.phrases = Phrases("resources/all_lower_nopunc.txt")
+            self.phrases = Phrases("resources/comm2.dev")
         else:
             self.phrases = None
 
@@ -121,6 +130,12 @@ class Keyboard(MainWindow):
         self.generate_layout()
 
         self.draw_words()
+
+        self.wpm_data = []
+        self.decay_avg_wpm = 0
+        self.wpm_time = 0
+        self.error_data = []
+        self.decay_avg_error = 1
 
         self.row_scan = True
         self.row_scan_num = -2
@@ -267,7 +282,13 @@ class Keyboard(MainWindow):
         old_rotate = config.period_li[self.speed]
         self.speed = value
         self.time_rotate = config.period_li[self.speed]
-        self.params_handle_dict['speed'].append([time.time(), old_rotate, self.time_rotate])
+        self.params_handle_dict['speed'].append([time.time(), old_rotate, self.scanning_delay])
+
+    def change_extra_delay(self, value):
+        old_pause_length = config.pause_li[self.pause_index]
+        self.pause_index = value
+        self.extra_delay = config.pause_li[self.pause_index]
+        self.params_handle_dict['extra_delay'].append([time.time(), old_pause_length, self.extra_delay])
         
     def toggle_sound_button(self, value):
         self.sound_set = value
@@ -284,6 +305,11 @@ class Keyboard(MainWindow):
         if self.focusWidget() == self.mainWidget.text_box:
             self.mainWidget.sldLabel.setFocus()  # focus on not toggle-able widget to allow keypress event
 
+        cur_time = time.time()
+        if cur_time >= self.next_frame_time:
+            self.update_frame()
+
+    def update_frame(self):
         self.last_update_time = time.time()
 
         if self.row_scan:
@@ -292,15 +318,12 @@ class Keyboard(MainWindow):
                 self.row_scan_num = 0
 
             if self.row_scan_num == 0 and self.pause_set:
-                self.mainWidget.frame_timer.stop()
-                self.mainWidget.frame_timer.start((config.period_li[self.speed] + config.pause_length) * 1000)
+                self.next_frame_time += (config.period_li[self.speed] + self.extra_delay)
             else:
-                self.mainWidget.frame_timer.stop()
-                self.mainWidget.frame_timer.start(config.period_li[self.speed] * 1000)
+                self.next_frame_time += config.period_li[self.speed]
 
         elif self.col_scan:
-            self.mainWidget.frame_timer.stop()
-            self.mainWidget.frame_timer.start(config.period_li[self.speed] * 1000)
+            self.next_frame_time += config.period_li[self.speed]
 
             self.col_scan_num += 1
             if self.col_scan_num >= self.key_cols_nums[self.row_scan_num]:
@@ -309,11 +332,27 @@ class Keyboard(MainWindow):
         self.mainWidget.highlight_grid()
 
     def on_press(self):
+
+        if self.wpm_time == 0:
+            self.wpm_time = time.time()
+
+        if self.phrase_prompts:
+            self.mainWidget.speed_slider.setEnabled(False)
+            self.mainWidget.extra_delay_slider.setEnabled(False)
+            self.mainWidget.speed_slider_label.setStyleSheet('QLabel { color: grey }')
+            self.mainWidget.sldLabel.setStyleSheet('QLabel { color: grey }')
+
+            self.mainWidget.extra_delay_label.setStyleSheet('QLabel { color: grey }')
+            self.mainWidget.extra_sldLabel.setStyleSheet('QLabel { color: grey }')
+
         if self.sound_set:
             self.play()
         if self.row_scan:
             self.row_scan = False
             self.col_scan = True
+            self.next_frame_time = time.time()
+            self.on_timer()
+
         elif self.col_scan:
             self.make_selection()
         self.num_presses += 1
@@ -330,9 +369,6 @@ class Keyboard(MainWindow):
         self.draw_words()
         self.mainWidget.update_grid()
         print(self.winner)
-
-        if self.is_write_data:
-            self.params_handle_dict['choice'].append([time.time(), self.winner == kconfig.mybad_char, self.typed_versions[-1]])
 
         self.col_scan = False
         self.row_scan = True
@@ -358,15 +394,22 @@ class Keyboard(MainWindow):
             # self.prefix = self.prefix[:-1]
             if self.typed_versions[-1] != '':
                 self.typed_versions += [previous_text[:-1]]
+                input_text = "<span style='color:#000000;'>" + self.typed_versions[-1] + "</span>"
                 self.mainWidget.text_box.setText("<span style='color:#000000;'>" + self.typed_versions[-1] + "</span>")
+            else:
+                input_text = ""
         elif self.winner == kconfig.mybad_char:
             if len(self.typed_versions) > 1:
                 self.typed_versions = self.typed_versions[:-1]
+                input_text = "<span style='color:#000000;'>" + self.typed_versions[-1] + "</span>"
                 self.mainWidget.text_box.setText("<span style='color:#000000;'>" + self.typed_versions[-1] + "</span>")
+            else:
+                input_text = ""
         elif self.winner == kconfig.clear_char:
             if len(self.typed_versions) > 1:
                 self.typed_versions += [" "]
                 self.mainWidget.text_box.setText("")
+            input_text = ""
         else:
             self.typed_versions += [previous_text + new_text]
             if new_text in kconfig.break_chars:
@@ -375,14 +418,69 @@ class Keyboard(MainWindow):
                     previous_text = previous_text[:-1]
             if len(new_text) > 0 and new_text[-1] == " ":
                 new_text = new_text[:-1]+"_"
+                new_text = new_text[:-1]+"_"
+            input_text = "<span style='color:#000000;'>" + previous_text + "</span><span style='color:#0000dd;'>" \
+                         + new_text + "</span>"
             self.mainWidget.text_box.setText(
-                "<span style='color:#000000;'>" + previous_text + "</span><span style='color:#00dd00;'>"
+                "<span style='color:#000000;'>" + previous_text + "</span><span style='color:#0000dd;'>"
                 + new_text + "</span>")
         self.mainWidget.text_box.update()
         self.update_prefixes()
 
+        # write output
+        if self.is_write_data:
+            choice_dict = {"time": time.time(), "undo": self.winner == kconfig.mybad_char,
+                           "backspace": self.winner == kconfig.back_char, "typed": self.typed_versions[-1]}
+            if self.phrase_prompts:
+                choice_dict["target"] = self.phrases.cur_phrase
+
+            self.params_handle_dict['choice'].append(choice_dict)
+
         if self.phrase_prompts:
-            self.update_phrases(self.typed_versions[-1])
+            self.update_phrases(self.typed_versions[-1], input_text)
+
+    def text_stat_update(self, phrase, typed):
+
+        _, cur_error = calc_MSD(phrase, typed)
+
+        self.error_data = [cur_error] + self.error_data
+        decaying_weights = np.power(0.8, np.arange(len(self.error_data)))
+        decaying_weights /= np.sum(decaying_weights)
+
+        decay_avg_error = sum(np.array(self.error_data)*decaying_weights)
+        error_delta = decay_avg_error / (self.decay_avg_error + 0.000001)
+        self.decay_avg_error = decay_avg_error
+
+        self.wpm_data = [(len(typed.split(" "))-1) / (time.time() - self.wpm_time)*60] + self.wpm_data
+        self.wpm_time = 0
+        decaying_weights = np.power(0.8, np.arange(len(self.wpm_data)))
+        decaying_weights /= np.sum(decaying_weights)
+
+        decay_avg_wpm = sum(np.array(self.wpm_data) * decaying_weights)
+        wpm_delta = decay_avg_wpm / (self.decay_avg_wpm + 0.000001)
+        self.decay_avg_wpm = decay_avg_wpm
+
+        if error_delta > 1:
+            error_red = int(min(4, error_delta)*63)
+            error_green = 0
+        else:
+            error_green = int(min(4, 1/error_delta) * 63)
+            error_red = 0
+
+        if wpm_delta < 1:
+            wpm_red = int(min(4, wpm_delta)*63)
+            wpm_green = 0
+        else:
+            wpm_green = int(min(4, 1/wpm_delta) * 63)
+            wpm_red = 0
+
+
+        self.mainWidget.error_label.setStyleSheet("color: rgb("+str(error_red)+", "+str(error_green)+", 0);")
+
+        self.mainWidget.wpm_label.setStyleSheet("color: rgb(" + str(wpm_red) + ", " + str(wpm_green) + ", 0);")
+
+        self.mainWidget.error_label.setText("Error Rate: " + str(round(decay_avg_error, 2)))
+        self.mainWidget.wpm_label.setText("Words/Min: " + str(round(decay_avg_wpm, 2)))
 
     def reset_context(self):
         self.left_context = ""
@@ -390,24 +488,38 @@ class Keyboard(MainWindow):
         self.typed = ""
         self.lm_prefix = ""
 
-    def update_phrases(self, cur_text):
+    def update_phrases(self, cur_text, input_text):
         cur_phrase_typed, next_phrase = self.phrases.compare(cur_text)
+        cur_phrase_highlighted = self.phrases.highlight(cur_text)
 
         if next_phrase:
-            self.typed_versions += ['']
+            self.text_stat_update(self.phrases.cur_phrase, self.typed_versions[-1])
+
+            self.typed_versions = ['']
             self.mainWidget.text_box.setText('')
+            self.mainWidget.speed_slider.setEnabled(True)
+            self.mainWidget.speed_slider_label.setStyleSheet('QLabel { color: blue }')
+            self.mainWidget.sldLabel.setStyleSheet('QLabel { color: blue }')
+
+            self.mainWidget.extra_delay_slider.setEnabled(True)
+            self.mainWidget.extra_delay_label.setStyleSheet('QLabel { color: blue }')
+            self.mainWidget.extra_sldLabel.setStyleSheet('QLabel { color: blue }')
+
             self.clear_text = False
             undo_text = 'Clear'
 
             self.phrases.sample()
-            cur_phrase_typed = ""
+            input_text = ""
+            cur_phrase_highlighted = self.phrases.highlight("")
             self.reset_context()
 
-        new_text = self.mainWidget.text_box.toPlainText()
+            if self.is_write_data:
+                choice_dict = {"time": time.time(), "undo": False, "backspace": False, "typed": "", "target": self.phrases.cur_phrase}
+                self.params_handle_dict['choice'].append(choice_dict)
+
 
         self.mainWidget.text_box.setText(
-            "<p><span style='color:#00dd00;'>" + cur_phrase_typed + "</span><span style='color:#000000;'>"
-            + self.phrases.cur_phrase[len(cur_phrase_typed):] + "<\p><p>" + new_text + "</span><\p>")
+            "<p>" + cur_phrase_highlighted + "<\p><p>" + input_text + "</span><\p>")
 
     def update_prefixes(self):
         cur_text = self.typed_versions[-1]
@@ -429,6 +541,11 @@ class Keyboard(MainWindow):
         sound_file = "icons/bell.wav"
         QtMultimedia.QSound.play(sound_file)
 
+    def data_auto_save(self):
+        if len(self.click_time_list) > 0:
+            print("auto saving data")
+            self.save_data()
+
     def closeEvent(self, event):
         print("CLOSING THRU CLOSEEVENT")
         self.quit(event)
@@ -439,6 +556,9 @@ class Keyboard(MainWindow):
         self.close()
 
     def save_data(self):
+        user_preferences = [self.key_config, self.speed, self.pause_index, self.is_write_data]
+        self.up_handel.safe_save(user_preferences)
+
         self.click_data_path = os.path.join(self.data_handel,
                                             'click_time_log_' + str(self.use_num) + '.p')
         self.params_data_path = os.path.join(self.data_handel,

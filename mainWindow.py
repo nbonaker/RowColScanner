@@ -8,6 +8,8 @@ from pickle_util import PickleUtil
 from phrases import Phrases
 import os
 import zipfile
+import numpy as np
+import time
 
 from widgets import VerticalSeparator, HorizontalSeparator, myQLabel
 
@@ -42,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.bottom_word_action.triggered.connect(lambda: self.word_change_event('bottom'))
 
         # Phrase Prompts Action
-        self.phrase_prompts_action = QtWidgets.QAction('&Phrase Prompts', self, checkable=True)
+        self.phrase_prompts_action = QtWidgets.QAction('&Study Mode', self, checkable=True)
         self.phrase_prompts_action.triggered.connect(self.phrase_prompts_event)
 
         exit_action = QtWidgets.QAction('&Exit', self)
@@ -80,10 +82,6 @@ class MainWindow(QtWidgets.QMainWindow):
         about_action = QtWidgets.QAction('&About', self)
         about_action.setStatusTip('Application information')
         about_action.triggered.connect(self.about_event)
-
-        menubar = self.menuBar()
-        file_menu = menubar.addMenu('&File')
-        file_menu.addAction(exit_action)
 
         tools_menu = menubar.addMenu('&Tools')
         tools_menu.addAction(self.phrase_prompts_action)
@@ -132,12 +130,35 @@ class MainWindow(QtWidgets.QMainWindow):
             phrase_status = True
 
         if self.phrases is None:
-            self.phrases = Phrases("resources/all_lower_nopunc.txt")
+            self.phrases = Phrases("resources/comm2.dev")
 
         self.phrase_prompts = phrase_status
         if phrase_status == True:
             self.phrases.sample()
-            self.update_phrases(self.typed_versions[-1])
+            self.update_phrases(self.typed_versions[-1], "")
+
+            self.is_write_data = True
+            choice_dict = {"time": time.time(), "undo": False, "backspace": False, "typed": "", "target": self.phrases.cur_phrase}
+            self.params_handle_dict['choice'].append(choice_dict)
+
+
+            self.mainWidget.cb_pause.setChecked(True)
+            self.top_word_action.trigger()
+            self.sorted_layout_action.trigger()
+
+            self.mainWidget.cb_pause.setEnabled(False)
+            self.mainWidget.speed_slider_label.setStyleSheet('QLabel { color: grey }')
+            self.mainWidget.sldLabel.setStyleSheet('QLabel { color: grey }')
+
+            self.mainWidget.extra_delay_label.setStyleSheet('QLabel { color: grey }')
+            self.mainWidget.extra_sldLabel.setStyleSheet('QLabel { color: grey }')
+
+            self.default_layout_action.setEnabled(False)
+            self.sorted_layout_action.setEnabled(False)
+            self.bottom_word_action.setEnabled(False)
+            self.top_word_action.setEnabled(False)
+            self.log_data_action.setEnabled(False)
+
         else:
             self.typed_versions.append("")
             self.left_context = ""
@@ -146,7 +167,26 @@ class MainWindow(QtWidgets.QMainWindow):
             self.lm_prefix = ""
             self.mainWidget.text_box.setText("")
 
+            self.mainWidget.cb_pause.setEnabled(True)
+            self.mainWidget.speed_slider.setEnabled(True)
+            self.mainWidget.extra_delay_slider.setEnabled(True)
+
+            self.default_layout_action.setEnabled(True)
+            self.sorted_layout_action.setEnabled(True)
+            self.top_word_action.setEnabled(True)
+            self.bottom_word_action.setEnabled(True)
+            self.log_data_action.setEnabled(True)
+
+            self.mainWidget.speed_slider_label.setStyleSheet('QLabel { color: black }')
+            self.mainWidget.sldLabel.setStyleSheet('QLabel { color: black }')
+            self.mainWidget.extra_delay_label.setStyleSheet('QLabel { color: black }')
+            self.mainWidget.extra_sldLabel.setStyleSheet('QLabel { color: black }')
+
+            self.mainWidget.error_label.setStyleSheet("color: rgb(0, 0, 0);")
+            self.mainWidget.wpm_label.setStyleSheet("color: rgb(0, 0, 0);")
+
         self.check_filemenu()
+        self.update_phrases("", "")
 
     def word_change_event(self, location):
         if location == 'top':
@@ -228,27 +268,36 @@ class MainWindow(QtWidgets.QMainWindow):
 
         reply = message_box.exec_()
 
-
     def about_event(self):
         # noinspection PyTypeChecker
-        QtWidgets.QMessageBox.question(self, 'About Row Column Scanner', "Copyright 2009 Tamara Broderick\n"
-                                                        "This file is part of Row Column Scanner Keyboard.\n\n"
-
-                                                        "Row Column Scanner Keyboard is free software: you can redistribute "
-                                                        "it and/or modify the Free Software Foundation, either "
-                                                        "version 3 of the License, or (at your option) any "
-                                                        "later version.\n\n"
-
-                                                        "Row Column Scanner Keyboard is distributed in the hope that it will"
-                                                        " be useful, but WITHOUT ANY WARRANTY; without even the"
-                                                        " implied warranty of MERCHANTABILITY or FITNESS FOR A "
-                                                        "PARTICULAR PURPOSE.  See the GNU General Public "
-                                                        "License for more details.\n\n"
-
-                                                        "You should have received a copy of the GNU General "
-                                                        "Public License along with Row Column Scanner Keyboard.  If not, see"
-                                                        " <http://www.gnu.org/licenses/>.",
-                                   QtWidgets.QMessageBox.Ok)
+        QtWidgets.QMessageBox.question(self, 'About Nomon', " Copyright 2019 Nicholas Bonaker, Keith Vertanen,"
+                                                            " Emli-Mari Nel, Tamara Broderick. This file is part of "
+                                                            "the Nomon software. Nomon is free software: you can "
+                                                            "redistribute it and/or modify it under the terms of the "
+                                                            "MIT License reproduced below.\n\n "
+                                                            "Permission is hereby granted, free of charge, to any "
+                                                            "person obtaining a copy of this software and associated"
+                                                            " documentation files (the \"Software\"), to deal in the"
+                                                            " Software without restriction, including without "
+                                                            "limitation the rights to use, copy, modify, merge, "
+                                                            "publish, distribute, sublicense, and/or sell copies of the"
+                                                            " Software,and to permit persons to whom the Software is"
+                                                            " furnished to do so, subject to the following conditions: "
+                                                            "The above copyright notice and this permission notice"
+                                                            " shall be included in all copies or substantial portions"
+                                                            " of the Software. \n\n "
+                                                            "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY"
+                                                            "OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT"
+                                                            " LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS"
+                                                            " FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO"
+                                                            " EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE"
+                                                            " LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,"
+                                                            " WHETHER IN AN ACTION OF CONTRACT, TORT OR"
+                                                            " OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION"
+                                                            " WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS"
+                                                            " IN THE SOFTWARE.\n\n"
+                                                            " <https://opensource.org/licenses/mit-license.html>",
+                                       QtWidgets.QMessageBox.Ok)
 
     def help_event(self):
         self.launch_help()
@@ -286,16 +335,29 @@ class MainKeyboardWidget(QtWidgets.QWidget):
         # generate slider for clock rotation speed
         self.speed_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
         self.speed_slider.setRange(config.scale_min, config.scale_max)
-        self.speed_slider.setValue(config.default_rotate_ind)
-        self.speed_slider_label = QtWidgets.QLabel('Scanning Delay:')
+        self.speed_slider.setValue(self.parent.speed)
+        self.speed_slider_label = QtWidgets.QLabel('Scanning Speed:')
 
         self.speed_slider_label.setFont(config.top_bar_font[self.parent.font_scale])
         self.sldLabel = QtWidgets.QLabel(str(self.speed_slider.value()))
         self.sldLabel.setFont(config.top_bar_font[self.parent.font_scale])
 
+        # generate slider for extra delay rotation speed
+        self.extra_delay_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
+        self.extra_delay_slider.setRange(config.extra_scale_min, config.extra_scale_max)
+        self.extra_delay_slider.setValue(self.parent.pause_index)
+        self.extra_delay_label = QtWidgets.QLabel('First Row Scan Speed:')
+
+        self.extra_delay_label.setFont(config.top_bar_font[self.parent.font_scale])
+        self.extra_sldLabel = QtWidgets.QLabel(str(self.extra_delay_slider.value()))
+        self.extra_sldLabel.setFont(config.top_bar_font[self.parent.font_scale])
+
         # wpm label
-        self.wpm_label = QtWidgets.QLabel("Selections/Min: "+"----")
+        self.wpm_label = QtWidgets.QLabel("Words/Min: " + "----")
         self.wpm_label.setFont(config.top_bar_font[self.parent.font_scale])
+
+        self.error_label = QtWidgets.QLabel("Error Rate: " + "----")
+        self.error_label.setFont(config.top_bar_font[self.parent.font_scale])
 
         # generate learn, speak, talk checkboxes
         self.cb_sound = QtWidgets.QCheckBox('Sound', self)
@@ -316,17 +378,34 @@ class MainKeyboardWidget(QtWidgets.QWidget):
         self.text_box.setReadOnly(True)
 
 
-        self.speed_slider.valueChanged[int].connect(self.change_value)
+        self.speed_slider.valueChanged[int].connect(self.change_scanning_value)
+        self.extra_delay_slider.valueChanged[int].connect(self.change_extra_value)
+
         self.cb_sound.toggled[bool].connect(self.parent.toggle_sound_button)
         self.cb_pause.toggled[bool].connect(self.parent.toggle_pause_button)
 
         # layout slider and checkboxes
         top_hbox = QtWidgets.QHBoxLayout()
         top_hbox.addWidget(self.speed_slider_label, 1)
+        top_hbox.addStretch(1)
         top_hbox.addWidget(self.speed_slider, 16)
+        top_hbox.addStretch(1)
         top_hbox.addWidget(self.sldLabel, 1)
         top_hbox.addStretch(2)
-        top_hbox.addWidget(self.wpm_label, 1)
+
+        top_hbox.addWidget(self.extra_delay_label, 1)
+        top_hbox.addStretch(1)
+        top_hbox.addWidget(self.extra_delay_slider, 8)
+        top_hbox.addStretch(1)
+        top_hbox.addWidget(self.extra_sldLabel, 1)
+        top_hbox.addStretch(2)
+
+        # entry metrics vbox
+        text_stat_vbox = QtWidgets.QVBoxLayout()
+        text_stat_vbox.addWidget(self.wpm_label)
+        text_stat_vbox.addWidget(self.error_label)
+
+        top_hbox.addLayout(text_stat_vbox)
         top_hbox.addStretch(2)
 
         # top_hbox.addWidget(self.cb_talk, 1)
@@ -352,7 +431,11 @@ class MainKeyboardWidget(QtWidgets.QWidget):
 
         self.frame_timer = QtCore.QTimer()
         self.frame_timer.timeout.connect(self.parent.on_timer)
-        self.frame_timer.start(config.period_li[self.parent.speed] * 1000)
+        self.frame_timer.start(config.ideal_wait_s * 1000)
+
+        self.data_save_timer = QtCore.QTimer()
+        self.data_save_timer.timeout.connect(self.parent.data_auto_save)
+        self.data_save_timer.start(config.auto_save_time * 60000)
 
         # Tool Tips
         # noinspection PyCallByClass
@@ -376,12 +459,32 @@ class MainKeyboardWidget(QtWidgets.QWidget):
         #     clock.redraw_text = True
         #     clock.update()
 
-    def change_value(self, value):  # Change clock speed
+    def change_scanning_value(self, value):  # Change clock speed
+        if self.parent.phrase_prompts:
+            inc_dir = np.sign(value - self.parent.speed)
+            value = self.parent.speed + inc_dir
+            self.speed_slider.setValue(value)
+            self.speed_slider.setEnabled(False)
+            self.speed_slider_label.setStyleSheet('QLabel { color: grey }')
+            self.sldLabel.setStyleSheet('QLabel { color: grey }')
+
         self.sldLabel.setText(str(self.speed_slider.value()))
         self.parent.change_speed(value)
 
         self.frame_timer.stop()
         self.frame_timer.start(config.period_li[self.parent.speed] * 1000)
+
+    def change_extra_value(self, value):
+        if self.parent.phrase_prompts:
+            inc_dir = np.sign(value - self.parent.pause_index)
+            value = self.parent.pause_index + inc_dir
+            self.extra_delay_slider.setValue(value)
+            self.extra_delay_slider.setEnabled(False)
+            self.extra_delay_label.setStyleSheet('QLabel { color: grey }')
+            self.extra_sldLabel.setStyleSheet('QLabel { color: grey }')
+
+        self.extra_sldLabel.setText(str(self.extra_delay_slider.value()))
+        self.parent.change_extra_delay(value)
 
     def layout_grid(self):
         self.label_grid = QtWidgets.QGridLayout()

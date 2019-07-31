@@ -178,19 +178,19 @@ class SimDataUtil:
                                 for points in data_points.tolist():
                                     formatted_data_points.append(
                                         [num_word, order, word_loc, start_delay, scan_delay]+points)
-        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Scan Start Delay", "Scanning Delay", "Selections per Minute",
+        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Delta", "Scanning Delay", "Selections per Minute",
                       "Characters per Minute", "Presses per Character", "Presses per Word",
                       "Error Rate (Errors/Selection)"]
         df = pd.DataFrame(formatted_data_points, columns=df_columns)
         self.DF = df
 
-        self.DF["Adjusted Scanning Delay"] = self.DF["Scanning Delay"] == 0.5
+        self.DF["Adjusted Scanning Delay"] = self.DF["Scanning Delay"] != 0.5
         # self.DF["Words First | Alpha Sorted"] = self.DF["Words First"]
         # self.DF["Words First | Freq Sorted"] = self.DF["Words First"]
 
     def plot_across_params(self):
 
-        ind_var_name = "Scan Start Delay"
+        ind_var_name = "Delta"
         for data_label in ['errors', 'errors', 'characters', 'selections', 'presses_char', 'presses_word']:
             if data_label == 'selections':
                 dep_var_name = "Selections per Minute"
@@ -213,11 +213,11 @@ class SimDataUtil:
             sns.set(font_scale=1.5, rc={"lines.linewidth": 3})
             sns.set_style({'font.serif': 'Helvetica'})
 
-            # sns.lineplot(x=ind_var_name, y=dep_var_name,
-            #              data=DF, ci="sd", ax=ax)
-            sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Adjusted Scanning Delay",
-                         palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2, light=.7, reverse=True),
+            sns.lineplot(x=ind_var_name, y=dep_var_name,
                          data=DF, ci="sd", ax=ax)
+            # sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Adjusted Scanning Delay",
+            #              palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2, light=.7, reverse=True),
+            #              data=DF, ci="sd", ax=ax)
 
             plt.title("Row Column Scanner: "+dep_var_name+" vs. "+ind_var_name)
             sns.axes_style("darkgrid")
@@ -259,7 +259,7 @@ def main():
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/click_time_delay/supercloud_results")
+    sdu = SimDataUtil("simulations/click_time_delay/supercloud_results_2")
     # sdu.DF
     sdu.plot_across_params()
 
