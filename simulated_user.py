@@ -20,7 +20,7 @@
 
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
-# from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 
 # from mainWindow import MainWindow
 # import dtree
@@ -77,6 +77,8 @@ class SimulatedUser:
 
             self.kernel_handle = PickleUtil("resources/kde_kernel.p")
             self.kde_kernel = self.kernel_handle.safe_load()
+
+            self.phrases = Phrases("resources/comm2.dev")
         self.sound_set = True
         self.pause_set = True
 
@@ -102,10 +104,7 @@ class SimulatedUser:
         self.lm = LanguageModel(lm_path, vocab_path)
 
         self.phrase_prompts = True
-        if self.phrase_prompts:
-            self.phrases = Phrases("resources/all_lower_nopunc.txt")
-        else:
-            self.phrases = None
+
 
         # determine keyboard positions
         # set up file handle for printing useful stuff
@@ -184,6 +183,13 @@ class SimulatedUser:
             self.scanning_delay = config.period_li[parameters["scan_delay"]]
         else:
             self.scanning_delay = config.period_li[self.speed]
+
+        if "corpus" in parameters:
+            self.phrases = Phrases(parameters["corpus"])
+            self.easy_phrase = parameters["corpus"] == "resources/comm2.dev"
+        else:
+            self.phrases = Phrases("resources/comm2.dev")
+            self.easy_phrase = 1
 
         self.draw_words()
         self.generate_layout()
@@ -366,8 +372,8 @@ class SimulatedUser:
         # noinspection PyProtectedMember
         if isinstance(self.kde_kernel, stats.kde.gaussian_kde):
             press_times = self.kde_kernel.resample(2)[0]
-            time_scale = config.period_li[config.default_rotate_ind]/self.scanning_delay
-            press_times = [t*time_scale for t in press_times]
+            # time_scale = config.period_li[config.default_rotate_ind]/self.scanning_delay
+            # press_times = [t*time_scale for t in press_times]
         elif isinstance(self.kde_kernel, stats._distn_infrastructure.rv_frozen):
             press_times = [t + self.scanning_delay/2 for t in self.kde_kernel.rvs(size=2)]
 
@@ -494,7 +500,7 @@ class SimulatedUser:
             data_file = os.path.join(self.data_loc, "sorted_"+str(int(self.key_config == "sorted"))
                                     +"_nwords_"+str(self.num_word_preds)
                                     +"_wf_"+str(int(self.words_first)) +
-                                    "_delay_"+str(round(self.start_scan_delay, 2))+".p")
+                                    "_delay_"+str(round(self.start_scan_delay, 2))+"_cor_"+str(self.easy_phrase)+".p")
 
         data_handel = PickleUtil(data_file)
 
@@ -504,6 +510,7 @@ class SimulatedUser:
         data_dict["num_words"] = self.num_word_preds
         data_dict["delay"] = self.start_scan_delay
         data_dict["scan_delay"] = self.scanning_delay
+        data_dict["easy_corpus"] = self.easy_phrase
         data_dict["errors"] = self.error_rate_avg
         data_dict["selections"] = self.sel_per_min
         data_dict["characters"] = self.char_per_min

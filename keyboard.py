@@ -375,6 +375,9 @@ class Keyboard(MainWindow):
         self.row_scan_num = -1
         self.col_scan_num = -1
 
+        self.next_frame_time = time.time()
+        self.on_timer()
+
     def draw_typed(self):
         if len(self.typed_versions) > 0:
             previous_text = self.typed_versions[-1]

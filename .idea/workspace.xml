@@ -2,23 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bcaf67c-e276-4639-92da-a1d9abae1c16" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/comm2.dev" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simulations/scan_delay/click_distributions/kde_kernel.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simulations/scan_delay/scan_delay.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simulations/scan_delay/sim_scan_delay.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/text_stats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/twitter-phrases/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/twitter-phrases/twitter-iv.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/twitter-phrases/twitter-oov.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/twitter-phrases/watch-iv.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/twitter-phrases/watch-oov.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/click_distributions/951_kernel.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/phrase_corpus.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/plots/Error.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/plots/char_min.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/plots/press_char.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/plots/press_word.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/plots/sel_min.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/sim_data/1/sorted_1_nwords_7_wf_1_delay_0.5_cor_False.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulations/phrase_corpus/sim_data/1/sorted_1_nwords_7_wf_1_delay_0.5_cor_True.p" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_load.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_load.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kenlm_lm.py" beforeDir="false" afterPath="$PROJECT_DIR$/kenlm_lm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/phrases.py" beforeDir="false" afterPath="$PROJECT_DIR$/phrases.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sim_data_load.py" beforeDir="false" afterPath="$PROJECT_DIR$/sim_data_load.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulated_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulations/scan_delay/sim_scan_delay.sh" beforeDir="false" afterPath="$PROJECT_DIR$/simulations/scan_delay/sim_scan_delay.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,13 +31,16 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="RowColScanner" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keyboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="598">
-              <caret line="341" column="81" selection-start-line="341" selection-start-column="81" selection-end-line="341" selection-end-column="81" />
+            <state relative-caret-position="201">
+              <caret line="240" selection-start-line="240" selection-end-line="240" />
               <folding>
                 <element signature="e#852#870#0" expanded="true" />
               </folding>
@@ -43,8 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulated_user.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
-              <caret line="185" column="62" lean-forward="true" selection-start-line="185" selection-start-column="62" selection-end-line="185" selection-end-column="62" />
+            <state relative-caret-position="450">
+              <caret line="388" column="51" lean-forward="true" selection-start-line="388" selection-start-column="51" selection-end-line="388" selection-end-column="51" />
               <folding>
                 <element signature="e#852#870#0" expanded="true" />
               </folding>
@@ -55,8 +63,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulations/scan_delay/scan_delay.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="20" column="18" lean-forward="true" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+            <state relative-caret-position="594">
+              <caret line="35" column="46" lean-forward="true" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -64,20 +72,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/simulations/scan_delay/sim_scan_delay.sh">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kenlm_lm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+            <state relative-caret-position="378">
+              <caret line="57" column="40" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
+              <folding>
+                <element signature="e#364#378#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulations/click_time_delay/click_time_delay.py">
+        <entry file="file://$PROJECT_DIR$/predictor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="37" column="57" lean-forward="true" selection-start-line="37" selection-start-column="57" selection-end-line="37" selection-end-column="57" />
+            <state relative-caret-position="413">
+              <caret line="243" column="36" selection-start-line="243" selection-start-column="36" selection-end-line="244" selection-end-column="67" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulations/phrase_corpus/phrase_corpus.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="269">
+              <caret line="36" column="45" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -88,8 +108,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data_load.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="235" lean-forward="true" selection-start-line="235" selection-end-line="235" />
+            <state relative-caret-position="72">
+              <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -97,20 +117,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pickle_util.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sim_data_load.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="715">
-              <caret line="224" lean-forward="true" selection-start-line="224" selection-end-line="224" />
+            <state relative-caret-position="381">
+              <caret line="191" column="81" lean-forward="true" selection-start-line="191" selection-start-column="81" selection-end-line="191" selection-end-column="81" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -119,22 +130,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/kenlm_lm.py">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/seaborn/relational.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="47" column="11" lean-forward="true" selection-start-line="47" selection-start-column="11" selection-end-line="47" selection-end-column="11" />
-              <folding>
-                <element signature="e#364#378#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+            <state relative-caret-position="147">
+              <caret line="141" selection-start-line="141" selection-end-line="141" />
             </state>
           </provider>
         </entry>
@@ -185,19 +184,20 @@
         <option value="$PROJECT_DIR$/simulations/delay_opt/delay_opt.py" />
         <option value="$PROJECT_DIR$/simulations/click_time_delay/sim_click_time_delay.sh" />
         <option value="$PROJECT_DIR$/simulations/click_time_delay/click_time_delay.py" />
-        <option value="$PROJECT_DIR$/sim_data_load.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/phrases.py" />
         <option value="$PROJECT_DIR$/mainWindow.py" />
         <option value="$PROJECT_DIR$/setup.py" />
-        <option value="$PROJECT_DIR$/keyboard.py" />
-        <option value="$PROJECT_DIR$/kenlm_lm.py" />
         <option value="$PROJECT_DIR$/config.py" />
-        <option value="$PROJECT_DIR$/data_load.py" />
-        <option value="$PROJECT_DIR$/predictor.py" />
-        <option value="$PROJECT_DIR$/simulated_user.py" />
         <option value="$PROJECT_DIR$/simulations/scan_delay/scan_delay.py" />
+        <option value="$PROJECT_DIR$/phrases.py" />
+        <option value="$PROJECT_DIR$/simulations/phrase_corpus/phrase_corpus.py" />
+        <option value="$PROJECT_DIR$/predictor.py" />
+        <option value="$PROJECT_DIR$/kenlm_lm.py" />
+        <option value="$PROJECT_DIR$/data_load.py" />
+        <option value="$PROJECT_DIR$/keyboard.py" />
         <option value="$PROJECT_DIR$/simulations/scan_delay/sim_scan_delay.sh" />
+        <option value="$PROJECT_DIR$/simulated_user.py" />
+        <option value="$PROJECT_DIR$/sim_data_load.py" />
       </list>
     </option>
   </component>
@@ -229,20 +229,7 @@
               <item name="RowColScanner" type="b2602c69:ProjectViewProjectNode" />
               <item name="RowColScanner" type="462c0819:PsiDirectoryNode" />
               <item name="simulations" type="462c0819:PsiDirectoryNode" />
-              <item name="delay_opt" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RowColScanner" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RowColScanner" type="462c0819:PsiDirectoryNode" />
-              <item name="simulations" type="462c0819:PsiDirectoryNode" />
               <item name="scan_delay" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RowColScanner" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RowColScanner" type="462c0819:PsiDirectoryNode" />
-              <item name="simulations" type="462c0819:PsiDirectoryNode" />
-              <item name="scan_delay" type="462c0819:PsiDirectoryNode" />
-              <item name="click_distributions" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -254,18 +241,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/simulations/scan_delay/click_distributions" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/simulations/phrase_corpus" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations\scan_delay\click_distributions" />
-      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations" />
-      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner" />
+      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations\phrase_corpus" />
       <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\resources" />
-      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\param_opt\click_distributions" />
+      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations" />
+      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations\scan_delay\click_distributions" />
+      <recent name="C:\Users\nickb\PycharmProjects\RowColScanner" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\nickb\PycharmProjects\RowColScanner\simulations\delay_opt\supercloud_results_delay" />
@@ -285,29 +272,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.scan_delay">
-    <configuration name="config" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="RowColScanner" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/config.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.sim_data_load">
     <configuration name="data_load" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RowColScanner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -374,6 +339,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="sim_data_load" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="RowColScanner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sim_data_load.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="simulated_user" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RowColScanner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -398,11 +385,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.scan_delay" />
-        <item itemvalue="Python.config" />
+        <item itemvalue="Python.sim_data_load" />
         <item itemvalue="Python.simulated_user" />
-        <item itemvalue="Python.data_load" />
+        <item itemvalue="Python.scan_delay" />
         <item itemvalue="Python.keyboard" />
+        <item itemvalue="Python.data_load" />
       </list>
     </recent_temporary>
   </component>
@@ -429,7 +416,7 @@
       <workItem from="1562881744452" duration="9000" />
       <workItem from="1563473567380" duration="21966000" />
       <workItem from="1563897881572" duration="17000" />
-      <workItem from="1563898022103" duration="14694000" />
+      <workItem from="1563898022103" duration="27121000" />
     </task>
     <task id="LOCAL-00001" summary="first iteration">
       <created>1559937167370</created>
@@ -557,11 +544,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562168347900</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="--Added scan delay simulation">
+      <created>1564590722006</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1564590722006</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="165100000" />
+    <option name="totallyTimeSpent" value="177527000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -576,12 +570,12 @@
     <frame x="-7" y="-7" width="2062" height="1254" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14720559" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49881798" visible="true" weight="0.1971058" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info id="Favorites" order="2" sideWeight="0.501182" side_tool="true" weight="0.27036276" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32947463" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.31700802" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.42030275" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3971505" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -635,7 +629,8 @@
     <MESSAGE value="added reaction time to delay simulation" />
     <MESSAGE value="updated delay simulation" />
     <MESSAGE value="--Added Simulation on normal click distributions for validation" />
-    <option name="LAST_COMMIT_MESSAGE" value="--Added Simulation on normal click distributions for validation" />
+    <MESSAGE value="--Added scan delay simulation" />
+    <option name="LAST_COMMIT_MESSAGE" value="--Added scan delay simulation" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -647,20 +642,22 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RowColScanner$scratch_13.coverage" NAME="scratch_13 Coverage Results" MODIFIED="1560192170930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$phrases.coverage" NAME="phrases Coverage Results" MODIFIED="1563478288823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/RowColScanner$kenlm_lm.coverage" NAME="kenlm_lm Coverage Results" MODIFIED="1563905249214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/RowColScanner$data_load.coverage" NAME="data_load Coverage Results" MODIFIED="1564589759494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$kenlm_lm.coverage" NAME="kenlm_lm Coverage Results" MODIFIED="1565033968030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$data_load.coverage" NAME="data_load Coverage Results" MODIFIED="1565057142039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$click_time_delay.coverage" NAME="click_time_delay Coverage Results" MODIFIED="1562168294995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/click_time_delay" />
+    <SUITE FILE_PATH="coverage/RowColScanner$phrase_corpus.coverage" NAME="phrase_corpus Coverage Results" MODIFIED="1564591950760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/phrase_corpus" />
     <SUITE FILE_PATH="coverage/RowColScanner$param_opt__1_.coverage" NAME="param_opt (1) Coverage Results" MODIFIED="1560533422405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/param_opt" />
-    <SUITE FILE_PATH="coverage/RowColScanner$scan_delay.coverage" NAME="scan_delay Coverage Results" MODIFIED="1564590684980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/scan_delay" />
+    <SUITE FILE_PATH="coverage/RowColScanner$scan_delay.coverage" NAME="scan_delay Coverage Results" MODIFIED="1565189392779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/scan_delay" />
     <SUITE FILE_PATH="coverage/RowColScanner$kconfig.coverage" NAME="kconfig Coverage Results" MODIFIED="1560194075846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$char_freq.coverage" NAME="char_freq Coverage Results" MODIFIED="1560197795528" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$mainWindow.coverage" NAME="mainWindow Coverage Results" MODIFIED="1562872281467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/RowColScanner$keyboard.coverage" NAME="keyboard Coverage Results" MODIFIED="1563942282881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$keyboard.coverage" NAME="keyboard Coverage Results" MODIFIED="1565058191346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$delay_opt.coverage" NAME="delay_opt Coverage Results" MODIFIED="1560717384386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulations/delay_opt" />
+    <SUITE FILE_PATH="coverage/RowColScanner$predictor.coverage" NAME="predictor Coverage Results" MODIFIED="1565033816187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$config.coverage" NAME="config Coverage Results" MODIFIED="1564590567433" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RowColScanner$param_opt.coverage" NAME="param_opt Coverage Results" MODIFIED="1560529757138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/param_opt" />
-    <SUITE FILE_PATH="coverage/RowColScanner$simulated_user.coverage" NAME="simulated_user Coverage Results" MODIFIED="1564590422519" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/RowColScanner$sim_data_load.coverage" NAME="sim_data_load Coverage Results" MODIFIED="1562170888883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$simulated_user.coverage" NAME="simulated_user Coverage Results" MODIFIED="1565189598673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RowColScanner$sim_data_load.coverage" NAME="sim_data_load Coverage Results" MODIFIED="1565190002327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/resources/char_set.txt">
@@ -810,32 +807,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/phrases.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1944">
-          <caret line="110" column="49" selection-start-line="110" selection-start-column="49" selection-end-line="110" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9558">
           <caret line="544" column="29" selection-start-line="544" selection-start-column="29" selection-end-line="544" selection-end-column="29" />
           <folding>
             <element signature="e#0#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kenlm_lm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="47" column="11" lean-forward="true" selection-start-line="47" selection-start-column="11" selection-end-line="47" selection-end-column="11" />
-          <folding>
-            <element signature="e#364#378#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -854,40 +831,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/seaborn/relational.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="141" selection-start-line="141" selection-end-line="141" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sim_data_load.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="715">
-          <caret line="224" lean-forward="true" selection-start-line="224" selection-end-line="224" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/keyboard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="341" column="81" selection-start-line="341" selection-start-column="81" selection-end-line="341" selection-end-column="81" />
-          <folding>
-            <element signature="e#852#870#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulations/click_time_delay/plots/character_vs_delta.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/simulations/click_time_delay/click_time_delay.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="594">
-          <caret line="37" column="57" lean-forward="true" selection-start-line="37" selection-start-column="57" selection-end-line="37" selection-end-column="57" />
+          <caret line="37" column="57" selection-start-line="37" selection-start-column="57" selection-end-line="37" selection-end-column="57" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
@@ -924,54 +874,125 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_load.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="235" lean-forward="true" selection-start-line="235" selection-end-line="235" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predictor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="665">
-          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+          <caret line="62" selection-start-line="62" selection-end-line="62" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulated_user.py">
+    <entry file="file://$PROJECT_DIR$/resources/twitter-phrases/readme.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="185" column="62" lean-forward="true" selection-start-line="185" selection-start-column="62" selection-end-line="185" selection-end-column="62" />
+        <state relative-caret-position="378">
+          <caret line="21" column="67" lean-forward="true" selection-start-line="21" selection-start-column="67" selection-end-line="21" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/phrases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
           <folding>
-            <element signature="e#852#870#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulations/scan_delay/scan_delay.py">
+    <entry file="file://$PROJECT_DIR$/simulations/phrase_corpus/phrase_corpus.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="20" column="18" lean-forward="true" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+        <state relative-caret-position="269">
+          <caret line="36" column="45" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/simulations/phrase_corpus/sim_data/1/sorted_1_nwords_7_wf_1_delay_0.5_cor_True.p">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predictor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="243" column="36" selection-start-line="243" selection-start-column="36" selection-end-line="244" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kenlm_lm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="57" column="40" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
+          <folding>
+            <element signature="e#364#378#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/keyboard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="240" selection-start-line="240" selection-end-line="240" />
+          <folding>
+            <element signature="e#852#870#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_load.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/seaborn/relational.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="141" selection-start-line="141" selection-end-line="141" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/simulations/scan_delay/sim_scan_delay.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        <state relative-caret-position="72">
+          <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulations/scan_delay/scan_delay.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="35" column="46" lean-forward="true" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulated_user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="388" column="51" lean-forward="true" selection-start-line="388" selection-start-column="51" selection-end-line="388" selection-end-column="51" />
+          <folding>
+            <element signature="e#852#870#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sim_data_load.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="191" column="81" lean-forward="true" selection-start-line="191" selection-start-column="81" selection-end-line="191" selection-end-column="81" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

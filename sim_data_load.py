@@ -28,19 +28,18 @@ class SimDataUtil:
                     user_data = dict()
                     for file in files:
                         file_data = PickleUtil(os.path.join(path, file)).safe_load()
-
-                        if 'attribute' in file_data:
-                            params = (int(file_data['order'] == "sorted"), file_data['words_first'],
-                                      file_data['num_words'], file_data['attribute'], file_data['scan_delay'])
-                        elif 'delay' in file_data:
-                            params = (int(file_data['order'] == "sorted"), file_data['words_first'],
-                                      file_data['num_words'], file_data['delay'])
+                        if "dist_id" in file:
+                            user_data["click_dist"] = file_data
+                            continue
                         else:
-                            params = (int(file_data['order'] == "sorted"), file_data['words_first'], file_data['num_words'], 0.75)
-                        print(params)
+                            data_value_names = {'errors', 'selections', 'characters', 'presses_sel', 'presses_char',
+                                                   'presses_word', 'kde_mses', 'kde'}
+                            self.param_names = set(file_data.keys()) - data_value_names
+                            params = tuple(file_data[name] for name in self.param_names)
+                        # print(self.param_names)
+                        # print(params)
                         user_data[params] = file_data
                     data_by_user[int(user_dir)] = user_data
-
         return data_by_user
 
     def plot_across_user(self, metric, params=None, trends=False, log=False, legend=None):
@@ -63,7 +62,10 @@ class SimDataUtil:
 
                 dep_vars += [user_data[params][m]]
                 if "attribute" in user_data[params]:
-                    ind_vars += [user_data[params]["attribute"]]
+                    if "supercloud_results_20" in self.data_directory:
+                        ind_vars += [user_data[params]["attribute"]*4]
+                    else:
+                        ind_vars += [user_data[params]["attribute"]]
                 else:
                     ind_vars += [user]
 
@@ -132,78 +134,47 @@ class SimDataUtil:
             for param in user_data:
                 if param != "click_dist":
                     if param not in average_data:
-                        average_data[param] = {'errors': [], 'selections': [], 'characters': [],
-                                               'presses_char': [], 'presses_word': []}
-                    for data_label in ['selections', 'characters', 'presses_char','presses_word', 'errors']:
+                        average_data[param] = {'errors': [], 'selections': [], 'characters': [], 'presses_word': [],
+                                               'presses_char': []}
+                    print(user_data[param].keys())
+                    for data_label in ['errors', 'selections', 'characters', 'presses_char', 'presses_word']:
                         average_data[param][data_label] += user_data[param][data_label]
 
-        print(average_data)
+        data_labels = {'errors', 'selections', 'characters', 'presses_word', 'presses_char'}
+        param_name_dict = {'num_words': "Word Predictions Max Count", 'order': 'Keyboard Layout',
+                           'words_first': "Words First", 'attribute': 'Attribute'}
 
-        num_words = list(set([param[2] for param in average_data]))
-        num_words.sort()
-        num_words.reverse()
+        var_name_dict = {'selections': "Selections/Min", 'characters': "Characters/Min",
+                         'presses_char': "Clicks/Character",
+                         'presses_word': "Clicks/Word", 'errors': "Error Rate"}
 
-        orders = list(set([param[0] for param in average_data]))
-        orders.sort()
+        long_form_data = []
+        for params in average_data.keys():
+            param_names = [param_name_dict[name] for name in self.param_names]
+            observation = dict(zip(param_names, params))
 
-        word_locs = list(set([param[1] for param in average_data]))
-        word_locs.sort()
+            param_data = average_data[params]
+            num_observations = len(param_data['errors'])
 
-        start_delays = list(set([param[3] for param in average_data]))
-        start_delays.sort()
+            for obs in range(num_observations):
+                for data_label in data_labels:
+                    observation[var_name_dict[data_label]] = param_data[data_label][obs]
 
-        scan_delays = list(set([param[4] for param in average_data]))
+                long_form_data += [observation.copy()]
 
-        if len(list(average_data.keys())[0]) > 2:
-            left_contexts = list(set([param[1] for param in average_data]))
-            left_contexts.sort()
-        formatted_data_points = []
-        for y_index, num_word in enumerate(num_words):
-            sub_plot_values = []
-            x_labels = []
-            for x_index, order in enumerate(orders):
-                for z_index, word_loc in enumerate(word_locs):
-                    for q_index, start_delay in enumerate(start_delays):
-                        for r_index, scan_delay in enumerate(scan_delays):
-                            if (order, word_loc, num_word, start_delay, scan_delay) in average_data:
-                                x_labels.append(str(int(num_word)))
-
-                                data_dict = average_data[(order, word_loc, num_word, start_delay, scan_delay)]
-
-                                all_data=[]
-                                for key in ['selections', 'characters', 'presses_char', 'presses_word', 'errors']:
-                                    all_data += [data_dict[key]]
-                                data_points = np.array(all_data).T
-
-                                for points in data_points.tolist():
-                                    formatted_data_points.append(
-                                        [num_word, order, word_loc, start_delay, scan_delay]+points)
-        df_columns = ["Word Predictions Max Count", "Frequency Sorted", "Words First", "Delta", "Scanning Delay", "Selections per Minute",
-                      "Characters per Minute", "Presses per Character", "Presses per Word",
-                      "Error Rate (Errors/Selection)"]
-        df = pd.DataFrame(formatted_data_points, columns=df_columns)
+        df = pd.DataFrame(long_form_data)
         self.DF = df
 
-        self.DF["Adjusted Scanning Delay"] = self.DF["Scanning Delay"] != 0.5
-        # self.DF["Words First | Alpha Sorted"] = self.DF["Words First"]
-        # self.DF["Words First | Freq Sorted"] = self.DF["Words First"]
+        # self.DF["Adjusted Scanning Delay"] = self.DF["Scanning Delay"] != 0.5
+        self.DF["Words First | Alpha Sorted"] = self.DF["Words First"]
+        self.DF["Words First | Freq Sorted"] = self.DF["Words First"]
 
     def plot_across_params(self):
 
-        ind_var_name = "Delta"
-        for data_label in ['errors', 'errors', 'characters', 'selections', 'presses_char', 'presses_word']:
-            if data_label == 'selections':
-                dep_var_name = "Selections per Minute"
-            elif data_label == 'characters':
-                dep_var_name = "Characters per Minute"
-            elif data_label == 'presses_char':
-                dep_var_name = "Presses per Character"
-            elif data_label == 'presses_word':
-                dep_var_name = "Presses per Word"
-            elif data_label == 'errors':
-                dep_var_name = "Error Rate (Errors/Selection)"
-            else:
-                raise ValueError("Data Attribute Unknown: " + data_label)
+        ind_var_name = "Word Predictions Max Count"
+
+        for dep_var_name in ['Error Rate', 'Selections/Min', 'Characters/Min', 'Clicks/Word',
+                           'Clicks/Character', 'Error Rate']:
 
             DF = self.DF
             pd.set_option('display.max_columns', 500)
@@ -212,15 +183,43 @@ class SimDataUtil:
             fig.set_size_inches(10, 8)
             sns.set(font_scale=1.5, rc={"lines.linewidth": 3})
             sns.set_style({'font.serif': 'Helvetica'})
+            if ind_var_name == "Word Predictions Max Count":
+                sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Freq Sorted",
+                             palette=sns.cubehelix_palette(2, start=2, rot=0.2, dark=.2, light=.7, reverse=True),
+                             data=DF[DF["Keyboard Layout"] == "sorted"], ci="sd", ax=ax)
+                sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Words First | Alpha Sorted",
+                             palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2, light=.7, reverse=True),
+                             data=DF[DF["Keyboard Layout"] == 'default'], ci="sd", ax=ax)
 
-            sns.lineplot(x=ind_var_name, y=dep_var_name,
-                         data=DF, ci="sd", ax=ax)
-            # sns.lineplot(x=ind_var_name, y=dep_var_name, hue="Adjusted Scanning Delay",
-            #              palette=sns.cubehelix_palette(2, start=3, rot=0.2, dark=.2, light=.7, reverse=True),
-            #              data=DF, ci="sd", ax=ax)
+            elif ind_var_name == "Left Context":
 
-            plt.title("Row Column Scanner: "+dep_var_name+" vs. "+ind_var_name)
-            sns.axes_style("darkgrid")
+                sns.violinplot(x=ind_var_name, y=dep_var_name, hue="Left Context", data=DF, inner="points", figsize=(10, 8))
+
+                lc_false = self.DF[self.DF[ind_var_name] == True][dep_var_name]
+                lc_false_mean = np.mean(lc_false.values)
+                plt.axhline(lc_false_mean, linestyle='--', color=(0.4, 0.4, 0.9))
+
+                lc_true = self.DF[self.DF[ind_var_name] == False][dep_var_name]
+                lc_true_mean = np.mean(lc_true.values)
+                plt.axhline(lc_true_mean, linestyle='--', color=(0.9, 0.9, 0.4))
+
+                t_value, p_value = stats.ttest_ind(lc_false, lc_true, equal_var=False)
+                plt.text(0.9, -.1, 'p-value: '+str(round(p_value, 2)), ha='center', va='center', transform=ax.transAxes)
+
+            elif ind_var_name == "Easy Corpus":
+                sns.violinplot(x=ind_var_name, y=dep_var_name,
+                            data=DF, ci="sd")
+
+            else:
+                sns.lineplot(x=ind_var_name, y=dep_var_name, color="cadetblue",
+                             data=DF, ci="sd", ax=ax)
+
+                sns.lineplot(x=ind_var_name, y=dep_var_name, color="darkslategrey",
+                             data=DF, ax=ax)
+
+
+            plt.title("Nomon: "+ dep_var_name+" vs. "+ind_var_name)
+
             plt.show()
 
             # break
@@ -253,14 +252,12 @@ def order_data(dir):
 
 
 def main():
-
     # sdu = SimDataUtil("simulations/increasing_variance/supercloud_results")
     # plot_legend = {"title": "MSE Improvement of Nomon KDE vs Click Distribution Variance", "x": "Standard Deviation (# hist bins)",
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/click_time_delay/supercloud_results_2")
-    # sdu.DF
+    sdu = SimDataUtil("simulations/param_opt/supercloud_results")
     sdu.plot_across_params()
 
     # plot_legend = {"title": "MSE of Nomon KDE vs Bimodal Distance",
@@ -269,7 +266,7 @@ def main():
     #
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=False, log=False, legend=plot_legend)
 
-    # sdu.plot_across_user(("selections", (3, 0.008))
+    # sdu.plot_across_user(["selections", "presses"], (3, 0.008))
     # sdu.plot_across_user("errors", (3, 0.008))
 
     # sdu.plot_across_user(["kde_mses", "errors"], (3, 0.008), trends=True)

@@ -2,6 +2,7 @@
 
 #SBATCH -o sim_scan_delay.out-%j-%a
 #SBATCH -a 1-20
+#SBATCH --time=3:00:00
 
 # run with: sbatch jobArray.sh
 # or run with: LLsub jobArray.sh

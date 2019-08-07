@@ -48,7 +48,7 @@ class LanguageModel():
 def main():
 
     LM = LanguageModel('resources/lm_word_medium.kenlm', 'resources/vocab_100k')
-    print(LM.get_words("hello ", "", 7))
+    print(LM.get_words("united states of ", "", 7))
 
     # # Provide the name and path of a language model and the vocabulary
     # lm_filename = '../resources/lm_word_medium.kenlm'
