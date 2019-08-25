@@ -509,9 +509,12 @@ class MainKeyboardWidget(QtWidgets.QWidget):
                     elif text == " ":
                         text = "_"
                     elif text == kconfig.word_char:
-                        text = self.parent.words_li[word_count]
-                        self.labels_word.append(label)
-                        word_count += 1
+                        if len(self.parent.words_li) > word_count:
+                            text = self.parent.words_li[word_count]
+                            self.labels_word.append(label)
+                            word_count += 1
+                        else:
+                            text = ""
 
                     if text == "":
                         label.setText("")

@@ -142,7 +142,8 @@ class SimDataUtil:
 
         data_labels = {'errors', 'selections', 'characters', 'presses_word', 'presses_char'}
         param_name_dict = {'num_words': "Word Predictions Max Count", 'order': 'Keyboard Layout',
-                           'words_first': "Words First", 'attribute': 'Attribute'}
+                           'words_first': "Words First", 'attribute': 'Attribute', "false_positive": "False Positive Rate",
+                           "delay": "Delay", "scan_delay": "Scanning Delay", "easy_corpus": "Corpus"}
 
         var_name_dict = {'selections': "Selections/Min", 'characters': "Characters/Min",
                          'presses_char': "Clicks/Character",
@@ -171,7 +172,7 @@ class SimDataUtil:
 
     def plot_across_params(self):
 
-        ind_var_name = "Word Predictions Max Count"
+        ind_var_name = "Scanning Delay"
 
         for dep_var_name in ['Error Rate', 'Selections/Min', 'Characters/Min', 'Clicks/Word',
                            'Clicks/Character', 'Error Rate']:
@@ -218,7 +219,7 @@ class SimDataUtil:
                              data=DF, ax=ax)
 
 
-            plt.title("Nomon: "+ dep_var_name+" vs. "+ind_var_name)
+            plt.title("Row Col: "+ dep_var_name+" vs. "+ind_var_name)
 
             plt.show()
 
@@ -257,7 +258,7 @@ def main():
     #                "y": "Average (-) Gradient of MSE Over Presses"}
     # sdu.plot_across_user("kde_mses", (3, 0.008), trends=True, log=False, legend=plot_legend)
 
-    sdu = SimDataUtil("simulations/param_opt/supercloud_results")
+    sdu = SimDataUtil("simulations/scan_delay/supercloud_results")
     sdu.plot_across_params()
 
     # plot_legend = {"title": "MSE of Nomon KDE vs Bimodal Distance",

@@ -10,7 +10,7 @@ from text_stats import calc_MSD
 import numpy as np
 
 
-data_dir = "D:\\Users\\nickb\\Study Data\\row_col_data\\951"
+data_dir = "C:\\Users\\nickb\\AppData\\Local\\RowCol\\data\\999"
 
 
 def flatten(l):
@@ -328,11 +328,11 @@ class DataUtil:
 
 du = DataUtil(data_dir)
 du.load_data()
-du.split_data_speed()
-# du.split_data_phrase()
-# du.make_data_frame()
-du.correct_data_speed()
-du.plot_data()
+# du.split_data_speed()
+du.split_data_phrase()
+du.make_data_frame()
+# du.correct_data_speed()
+# du.plot_data()
 # du.save_hist()
 # du.print_stat_avg()
-# du.plot_phrase_stats()
+du.plot_phrase_stats()

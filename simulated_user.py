@@ -42,15 +42,29 @@ import pathlib
 # sys.path.insert(0, os.path.realpath('../KernelDensityEstimation'))
 
 class Time():
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         self.cur_time = 0
+        self.update_fp_time()
 
     def time(self):
         return self.cur_time
 
     def set_time(self, t):
-        self.cur_time = t
+        if t > self.next_fp_time:
+            self.cur_time = self.next_fp_time
+            self.update_fp_time()
+            self.parent.gen_false_positive(t)
 
+        else:
+            self.cur_time = t
+
+    def update_fp_time(self):
+        if self.parent.false_positive_rate == 0:
+            self.next_fp_time = float("inf")
+        else:
+            self.next_fp_time = self.cur_time + np.random.exponential(scale=1 / self.parent.false_positive_rate, size=1)[0]
+        # print(self.next_fp_time)
 
 class SimulatedUser:
     def __init__(self, cwd=os.getcwd(), job_num=None, sub_call=False):
@@ -79,6 +93,10 @@ class SimulatedUser:
             self.kde_kernel = self.kernel_handle.safe_load()
 
             self.phrases = Phrases("resources/comm2.dev")
+
+            self.false_positive_rate = 0.01
+            self.num_fp = 0
+
         self.sound_set = True
         self.pause_set = True
 
@@ -90,7 +108,7 @@ class SimulatedUser:
         self.working_dir = cwd
         self.gen_data_dir()
 
-        self.time = Time()
+        self.time = Time(self)
         self.prev_time = 0
 
         self.num_presses = 0
@@ -191,6 +209,11 @@ class SimulatedUser:
             self.phrases = Phrases("resources/comm2.dev")
             self.easy_phrase = 1
 
+        if "false_positive" in parameters:
+            self.false_positive_rate = parameters["false_positive"]
+        else:
+            self.false_positive_rate = 0.01
+
         self.draw_words()
         self.generate_layout()
         self.update_layout()
@@ -213,6 +236,7 @@ class SimulatedUser:
             print("presses per character: ", self.num_presses / (self.num_chars + 1))
             print("presses per word: ", self.num_presses / self.num_words)
             print("error rate: ", self.num_errors / (self.num_selections + 1))
+            print("fp rate: ", self.num_fp / self.time.time())
 
             self.update_sim_averages(trials)
 
@@ -436,6 +460,17 @@ class SimulatedUser:
         self.draw_words()
         self.update_layout()
 
+    def gen_false_positive(self, return_time):
+        self.num_fp += 1
+        self.num_presses += 2
+
+        self.winner = self.key_map[np.random.randint(0, len(self.key_map[0])), 2]
+        self.draw_typed(error=True)
+        self.draw_words()
+        self.update_layout()
+
+        self.time.set_time(return_time)
+
     def draw_typed(self, error=False):
         if len(self.typed_versions) > 0:
             previous_text = self.typed_versions[-1]
@@ -495,12 +530,13 @@ class SimulatedUser:
                                      + "_wf_" + str(int(self.words_first)) +
                                      "_delay_" + str(round(self.start_scan_delay, 2)) +
                                      "_scan_" + str(self.scanning_delay) +
-                                     "_atr_" + str(attribute) + ".p")
+                                     "_atr_" + str(attribute) + "_fp_"+str(self.false_positive_rate)+".p")
         else:
             data_file = os.path.join(self.data_loc, "sorted_"+str(int(self.key_config == "sorted"))
                                     +"_nwords_"+str(self.num_word_preds)
                                     +"_wf_"+str(int(self.words_first)) +
-                                    "_delay_"+str(round(self.start_scan_delay, 2))+"_cor_"+str(self.easy_phrase)+".p")
+                                    "_delay_"+str(round(self.start_scan_delay, 2))+"_cor_"+str(self.easy_phrase)+
+                                     "_scan_" + str(self.scanning_delay) + "_fp_"+str(self.false_positive_rate)+".p")
 
         data_handel = PickleUtil(data_file)
 
@@ -511,6 +547,7 @@ class SimulatedUser:
         data_dict["delay"] = self.start_scan_delay
         data_dict["scan_delay"] = self.scanning_delay
         data_dict["easy_corpus"] = self.easy_phrase
+        data_dict["false_positive"] = self.false_positive_rate
         data_dict["errors"] = self.error_rate_avg
         data_dict["selections"] = self.sel_per_min
         data_dict["characters"] = self.char_per_min
